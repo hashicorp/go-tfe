@@ -12,6 +12,8 @@ type ConfigurationVersions_attributes struct {
     additionalData map[string]any
     // The autoQueueRuns property
     autoQueueRuns *bool
+    // Paths of files changed in the VCS commit that triggered this configuration version.
+    changedFiles []string
     // The error property
     error *string
     // The errorMessage property
@@ -51,6 +53,11 @@ func (m *ConfigurationVersions_attributes) GetAdditionalData()(map[string]any) {
 func (m *ConfigurationVersions_attributes) GetAutoQueueRuns()(*bool) {
     return m.autoQueueRuns
 }
+// GetChangedFiles gets the changed-files property value. Paths of files changed in the VCS commit that triggered this configuration version.
+// returns a []string when successful
+func (m *ConfigurationVersions_attributes) GetChangedFiles()([]string) {
+    return m.changedFiles
+}
 // GetError gets the error property value. The error property
 // returns a *string when successful
 func (m *ConfigurationVersions_attributes) GetError()(*string) {
@@ -72,6 +79,22 @@ func (m *ConfigurationVersions_attributes) GetFieldDeserializers()(map[string]fu
         }
         if val != nil {
             m.SetAutoQueueRuns(val)
+        }
+        return nil
+    }
+    res["changed-files"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfPrimitiveValues("string")
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]string, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = *(v.(*string))
+                }
+            }
+            m.SetChangedFiles(res)
         }
         return nil
     }
@@ -254,6 +277,10 @@ func (m *ConfigurationVersions_attributes) SetAdditionalData(value map[string]an
 func (m *ConfigurationVersions_attributes) SetAutoQueueRuns(value *bool)() {
     m.autoQueueRuns = value
 }
+// SetChangedFiles sets the changed-files property value. Paths of files changed in the VCS commit that triggered this configuration version.
+func (m *ConfigurationVersions_attributes) SetChangedFiles(value []string)() {
+    m.changedFiles = value
+}
 // SetError sets the error property value. The error property
 func (m *ConfigurationVersions_attributes) SetError(value *string)() {
     m.error = value
@@ -290,6 +317,7 @@ type ConfigurationVersions_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetAutoQueueRuns()(*bool)
+    GetChangedFiles()([]string)
     GetError()(*string)
     GetErrorMessage()(*string)
     GetProvisional()(*bool)
@@ -299,6 +327,7 @@ type ConfigurationVersions_attributesable interface {
     GetStatusTimestamps()(ConfigurationVersions_attributes_statusTimestampsable)
     GetUploadUrl()(*string)
     SetAutoQueueRuns(value *bool)()
+    SetChangedFiles(value []string)()
     SetError(value *string)()
     SetErrorMessage(value *string)()
     SetProvisional(value *bool)()

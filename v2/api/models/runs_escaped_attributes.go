@@ -37,6 +37,8 @@ type Runs_attributes struct {
     isDestroy *bool
     // The message property
     message *string
+    // This attribute is only available in HCP Terraform.
+    minimalRefresh *bool
     // The permissions property
     permissions Runs_attributes_permissionsable
     // The planOnly property
@@ -268,6 +270,16 @@ func (m *Runs_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e8
         }
         return nil
     }
+    res["minimal-refresh"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetMinimalRefresh(val)
+        }
+        return nil
+    }
     res["permissions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateRuns_attributes_permissionsFromDiscriminatorValue)
         if err != nil {
@@ -479,6 +491,11 @@ func (m *Runs_attributes) GetIsDestroy()(*bool) {
 func (m *Runs_attributes) GetMessage()(*string) {
     return m.message
 }
+// GetMinimalRefresh gets the minimal-refresh property value. This attribute is only available in HCP Terraform.
+// returns a *bool when successful
+func (m *Runs_attributes) GetMinimalRefresh()(*bool) {
+    return m.minimalRefresh
+}
 // GetPermissions gets the permissions property value. The permissions property
 // returns a Runs_attributes_permissionsable when successful
 func (m *Runs_attributes) GetPermissions()(Runs_attributes_permissionsable) {
@@ -618,6 +635,12 @@ func (m *Runs_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0
     }
     {
         err := writer.WriteStringValue("message", m.GetMessage())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteBoolValue("minimal-refresh", m.GetMinimalRefresh())
         if err != nil {
             return err
         }
@@ -783,6 +806,10 @@ func (m *Runs_attributes) SetIsDestroy(value *bool)() {
 func (m *Runs_attributes) SetMessage(value *string)() {
     m.message = value
 }
+// SetMinimalRefresh sets the minimal-refresh property value. This attribute is only available in HCP Terraform.
+func (m *Runs_attributes) SetMinimalRefresh(value *bool)() {
+    m.minimalRefresh = value
+}
 // SetPermissions sets the permissions property value. The permissions property
 func (m *Runs_attributes) SetPermissions(value Runs_attributes_permissionsable)() {
     m.permissions = value
@@ -864,6 +891,7 @@ type Runs_attributesable interface {
     GetInvokeActionAddrs()([]string)
     GetIsDestroy()(*bool)
     GetMessage()(*string)
+    GetMinimalRefresh()(*bool)
     GetPermissions()(Runs_attributes_permissionsable)
     GetPlanOnly()(*bool)
     GetPolicyPaths()([]string)
@@ -893,6 +921,7 @@ type Runs_attributesable interface {
     SetInvokeActionAddrs(value []string)()
     SetIsDestroy(value *bool)()
     SetMessage(value *string)()
+    SetMinimalRefresh(value *bool)()
     SetPermissions(value Runs_attributes_permissionsable)()
     SetPlanOnly(value *bool)()
     SetPolicyPaths(value []string)()
