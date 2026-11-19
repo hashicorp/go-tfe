@@ -13,6 +13,8 @@ type StackConfigurations_attributes struct {
     additionalData map[string]any
     // The branch this configuration belongs to. When creating a configuration, this may be set to create the configuration from the head of that branch. It requires `source=fetch` and a branch that is mapped in the stack's version control settings `branch-group-mappings`, and is only honored when the `stacks-multi-branch` feature is enabled; it is ignored otherwise.
     branch *string
+    // The components declared in this configuration (including those in embedded stacks and removed blocks), sorted by name. Empty until the configuration has been prepared.
+    components []StackConfigurations_attributes_componentsable
     // The createdAt property
     createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The topology map showing deployment-to-group assignments for this configuration, used as the baseline for comparing structural changes
@@ -52,6 +54,11 @@ func (m *StackConfigurations_attributes) GetAdditionalData()(map[string]any) {
 func (m *StackConfigurations_attributes) GetBranch()(*string) {
     return m.branch
 }
+// GetComponents gets the components property value. The components declared in this configuration (including those in embedded stacks and removed blocks), sorted by name. Empty until the configuration has been prepared.
+// returns a []StackConfigurations_attributes_componentsable when successful
+func (m *StackConfigurations_attributes) GetComponents()([]StackConfigurations_attributes_componentsable) {
+    return m.components
+}
 // GetCreatedAt gets the created-at property value. The createdAt property
 // returns a *Time when successful
 func (m *StackConfigurations_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
@@ -78,6 +85,22 @@ func (m *StackConfigurations_attributes) GetFieldDeserializers()(map[string]func
         }
         if val != nil {
             m.SetBranch(val)
+        }
+        return nil
+    }
+    res["components"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(CreateStackConfigurations_attributes_componentsFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]StackConfigurations_attributes_componentsable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(StackConfigurations_attributes_componentsable)
+                }
+            }
+            m.SetComponents(res)
         }
         return nil
     }
@@ -224,6 +247,10 @@ func (m *StackConfigurations_attributes) SetAdditionalData(value map[string]any)
 func (m *StackConfigurations_attributes) SetBranch(value *string)() {
     m.branch = value
 }
+// SetComponents sets the components property value. The components declared in this configuration (including those in embedded stacks and removed blocks), sorted by name. Empty until the configuration has been prepared.
+func (m *StackConfigurations_attributes) SetComponents(value []StackConfigurations_attributes_componentsable)() {
+    m.components = value
+}
 // SetCreatedAt sets the created-at property value. The createdAt property
 func (m *StackConfigurations_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.createdAt = value
@@ -260,6 +287,7 @@ type StackConfigurations_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetBranch()(*string)
+    GetComponents()([]StackConfigurations_attributes_componentsable)
     GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetDeploymentTopology()(StackConfigurations_attributes_deploymentTopologyable)
     GetDestroyAll()(*bool)
@@ -269,6 +297,7 @@ type StackConfigurations_attributesable interface {
     GetStatus()(*StackConfigurations_attributes_status)
     GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     SetBranch(value *string)()
+    SetComponents(value []StackConfigurations_attributes_componentsable)()
     SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetDeploymentTopology(value StackConfigurations_attributes_deploymentTopologyable)()
     SetDestroyAll(value *bool)()

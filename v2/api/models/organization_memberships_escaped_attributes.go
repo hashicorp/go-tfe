@@ -17,6 +17,10 @@ type OrganizationMemberships_attributes struct {
     email *string
     // Whether two-factor authentication is required for the organization. Only present for invited users.
     isOrgTwoFactorRequired *bool
+    // Whether the user's membership is managed by SCIM provisioning. Only present when SCIM is configured for the organization (HCP Terraform) or SCIM is active (Terraform Enterprise).
+    isScimManaged *bool
+    // The timestamp of the last SCIM sync for this member. Only present when SCIM is configured for the organization (HCP Terraform) or SCIM is active (Terraform Enterprise).
+    lastScimSyncAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The status of the organization membership. Can be "active", "invited", or "inactive".
     status *OrganizationMemberships_attributes_status
 }
@@ -81,6 +85,26 @@ func (m *OrganizationMemberships_attributes) GetFieldDeserializers()(map[string]
         }
         return nil
     }
+    res["is-scim-managed"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetIsScimManaged(val)
+        }
+        return nil
+    }
+    res["last-scim-sync-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetTimeValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetLastScimSyncAt(val)
+        }
+        return nil
+    }
     res["status"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetEnumValue(ParseOrganizationMemberships_attributes_status)
         if err != nil {
@@ -97,6 +121,16 @@ func (m *OrganizationMemberships_attributes) GetFieldDeserializers()(map[string]
 // returns a *bool when successful
 func (m *OrganizationMemberships_attributes) GetIsOrgTwoFactorRequired()(*bool) {
     return m.isOrgTwoFactorRequired
+}
+// GetIsScimManaged gets the is-scim-managed property value. Whether the user's membership is managed by SCIM provisioning. Only present when SCIM is configured for the organization (HCP Terraform) or SCIM is active (Terraform Enterprise).
+// returns a *bool when successful
+func (m *OrganizationMemberships_attributes) GetIsScimManaged()(*bool) {
+    return m.isScimManaged
+}
+// GetLastScimSyncAt gets the last-scim-sync-at property value. The timestamp of the last SCIM sync for this member. Only present when SCIM is configured for the organization (HCP Terraform) or SCIM is active (Terraform Enterprise).
+// returns a *Time when successful
+func (m *OrganizationMemberships_attributes) GetLastScimSyncAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+    return m.lastScimSyncAt
 }
 // GetStatus gets the status property value. The status of the organization membership. Can be "active", "invited", or "inactive".
 // returns a *OrganizationMemberships_attributes_status when successful
@@ -135,6 +169,14 @@ func (m *OrganizationMemberships_attributes) SetEmail(value *string)() {
 func (m *OrganizationMemberships_attributes) SetIsOrgTwoFactorRequired(value *bool)() {
     m.isOrgTwoFactorRequired = value
 }
+// SetIsScimManaged sets the is-scim-managed property value. Whether the user's membership is managed by SCIM provisioning. Only present when SCIM is configured for the organization (HCP Terraform) or SCIM is active (Terraform Enterprise).
+func (m *OrganizationMemberships_attributes) SetIsScimManaged(value *bool)() {
+    m.isScimManaged = value
+}
+// SetLastScimSyncAt sets the last-scim-sync-at property value. The timestamp of the last SCIM sync for this member. Only present when SCIM is configured for the organization (HCP Terraform) or SCIM is active (Terraform Enterprise).
+func (m *OrganizationMemberships_attributes) SetLastScimSyncAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
+    m.lastScimSyncAt = value
+}
 // SetStatus sets the status property value. The status of the organization membership. Can be "active", "invited", or "inactive".
 func (m *OrganizationMemberships_attributes) SetStatus(value *OrganizationMemberships_attributes_status)() {
     m.status = value
@@ -145,9 +187,13 @@ type OrganizationMemberships_attributesable interface {
     GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetEmail()(*string)
     GetIsOrgTwoFactorRequired()(*bool)
+    GetIsScimManaged()(*bool)
+    GetLastScimSyncAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetStatus()(*OrganizationMemberships_attributes_status)
     SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetEmail(value *string)()
     SetIsOrgTwoFactorRequired(value *bool)()
+    SetIsScimManaged(value *bool)()
+    SetLastScimSyncAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetStatus(value *OrganizationMemberships_attributes_status)()
 }

@@ -10,10 +10,14 @@ import (
 type RegistryModules_relationships struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
+    // The latestTestRun property
+    latestTestRun TestRunsHasOneNullableable
     // The noCodeModules property
     noCodeModules Links_relatedable
     // The organization property
     organization Links_relatedable
+    // Links-only relationship; resource identifiers are not included.
+    tagBindings TagBindingsHasManyable
 }
 // NewRegistryModules_relationships instantiates a new RegistryModules_relationships and sets the default values.
 func NewRegistryModules_relationships()(*RegistryModules_relationships) {
@@ -36,6 +40,16 @@ func (m *RegistryModules_relationships) GetAdditionalData()(map[string]any) {
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *RegistryModules_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+    res["latest-test-run"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateTestRunsHasOneNullableFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetLatestTestRun(val.(TestRunsHasOneNullableable))
+        }
+        return nil
+    }
     res["no-code-modules"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
         if err != nil {
@@ -56,7 +70,22 @@ func (m *RegistryModules_relationships) GetFieldDeserializers()(map[string]func(
         }
         return nil
     }
+    res["tag-bindings"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateTagBindingsHasManyFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetTagBindings(val.(TagBindingsHasManyable))
+        }
+        return nil
+    }
     return res
+}
+// GetLatestTestRun gets the latest-test-run property value. The latestTestRun property
+// returns a TestRunsHasOneNullableable when successful
+func (m *RegistryModules_relationships) GetLatestTestRun()(TestRunsHasOneNullableable) {
+    return m.latestTestRun
 }
 // GetNoCodeModules gets the no-code-modules property value. The noCodeModules property
 // returns a Links_relatedable when successful
@@ -68,8 +97,19 @@ func (m *RegistryModules_relationships) GetNoCodeModules()(Links_relatedable) {
 func (m *RegistryModules_relationships) GetOrganization()(Links_relatedable) {
     return m.organization
 }
+// GetTagBindings gets the tag-bindings property value. Links-only relationship; resource identifiers are not included.
+// returns a TagBindingsHasManyable when successful
+func (m *RegistryModules_relationships) GetTagBindings()(TagBindingsHasManyable) {
+    return m.tagBindings
+}
 // Serialize serializes information the current object
 func (m *RegistryModules_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
+    {
+        err := writer.WriteObjectValue("latest-test-run", m.GetLatestTestRun())
+        if err != nil {
+            return err
+        }
+    }
     {
         err := writer.WriteObjectValue("no-code-modules", m.GetNoCodeModules())
         if err != nil {
@@ -78,6 +118,12 @@ func (m *RegistryModules_relationships) Serialize(writer i878a80d2330e89d2689638
     }
     {
         err := writer.WriteObjectValue("organization", m.GetOrganization())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("tag-bindings", m.GetTagBindings())
         if err != nil {
             return err
         }
@@ -94,6 +140,10 @@ func (m *RegistryModules_relationships) Serialize(writer i878a80d2330e89d2689638
 func (m *RegistryModules_relationships) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
+// SetLatestTestRun sets the latest-test-run property value. The latestTestRun property
+func (m *RegistryModules_relationships) SetLatestTestRun(value TestRunsHasOneNullableable)() {
+    m.latestTestRun = value
+}
 // SetNoCodeModules sets the no-code-modules property value. The noCodeModules property
 func (m *RegistryModules_relationships) SetNoCodeModules(value Links_relatedable)() {
     m.noCodeModules = value
@@ -102,11 +152,19 @@ func (m *RegistryModules_relationships) SetNoCodeModules(value Links_relatedable
 func (m *RegistryModules_relationships) SetOrganization(value Links_relatedable)() {
     m.organization = value
 }
+// SetTagBindings sets the tag-bindings property value. Links-only relationship; resource identifiers are not included.
+func (m *RegistryModules_relationships) SetTagBindings(value TagBindingsHasManyable)() {
+    m.tagBindings = value
+}
 type RegistryModules_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetLatestTestRun()(TestRunsHasOneNullableable)
     GetNoCodeModules()(Links_relatedable)
     GetOrganization()(Links_relatedable)
+    GetTagBindings()(TagBindingsHasManyable)
+    SetLatestTestRun(value TestRunsHasOneNullableable)()
     SetNoCodeModules(value Links_relatedable)()
     SetOrganization(value Links_relatedable)()
+    SetTagBindings(value TagBindingsHasManyable)()
 }
