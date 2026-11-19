@@ -1,3 +1,11 @@
+# Unreleased
+
+## Enhancements
+
+* Adds `DefaultHYOKConfiguration` to `Project` and `DefaultHYOKConfigurationID` to `ProjectCreateOptions` and `ProjectUpdateOptions` to set, clear, and read a project's default HYOK configuration
+* Adds `HYOKConfiguration` to `Workspace` and `HYOKConfigurationID` to `WorkspaceCreateOptions` and `WorkspaceUpdateOptions` to set, clear, and read a workspace's HYOK configuration override
+* Adds read-only `HYOKReencryptionStatus` and `HYOKReencryptionError` to `Workspace` to report HYOK re-encryption progress after a workspace's HYOK configuration changes
+
 # v1.112.0
 
 ## Enhancements

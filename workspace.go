@@ -230,6 +230,16 @@ type Workspace struct {
 	SettingOverwrites           *WorkspaceSettingOverwrites     `jsonapi:"attr,setting-overwrites"`
 	HYOKEnabled                 *bool                           `jsonapi:"attr,hyok-enabled"`
 
+	// HYOKReencryptionStatus is the status of the workspace's HYOK
+	// re-encryption after its HYOK configuration changed: "pending" or
+	// "failed". When unset, no re-encryption is outstanding. The API only
+	// returns a value to organization owners; for other callers it is also unset.
+	// Note: HYOK is only available in HCP Terraform.
+	HYOKReencryptionStatus jsonapi.NullableAttr[string] `jsonapi:"attr,hyok-reencryption-status,omitempty"`
+	// HYOKReencryptionError is the error message of a failed HYOK re-encryption.
+	// It is only set when HYOKReencryptionStatus is "failed".
+	HYOKReencryptionError *string `jsonapi:"attr,hyok-reencryption-error"`
+
 	// Relations
 	AgentPool                   *AgentPool             `jsonapi:"relation,agent-pool"`
 	CurrentRun                  *Run                   `jsonapi:"relation,current-run"`
@@ -245,6 +255,9 @@ type Workspace struct {
 	TagBindings                 []*TagBinding          `jsonapi:"relation,tag-bindings"`
 	EffectiveTagBindings        []*EffectiveTagBinding `jsonapi:"relation,effective-tag-bindings"`
 	HYOKEncryptedDataKey        *HYOKEncryptedDataKey  `jsonapi:"relation,hyok-data-key-for-encryption"`
+	// HYOKConfiguration is the workspace's HYOK configuration override.
+	// Only the ID is populated. Note: HYOK is only available in HCP Terraform.
+	HYOKConfiguration *HYOKConfiguration `jsonapi:"relation,hyok-configuration"`
 
 	// Deprecated: Use DataRetentionPolicyChoice instead.
 	DataRetentionPolicy *DataRetentionPolicy
@@ -512,6 +525,11 @@ type WorkspaceCreateOptions struct {
 	// Note: HYOK is only available in HCP Terraform.
 	HYOKEnabled *bool `jsonapi:"attr,hyok-enabled,omitempty"`
 
+	// Optional: The ID of the HYOK configuration to use for this workspace,
+	// overriding the project's default HYOK configuration.
+	// Note: HYOK is only available in HCP Terraform.
+	HYOKConfigurationID *string `jsonapi:"attr,hyok-configuration-id,omitempty"`
+
 	// A list of tags to attach to the workspace. If the tag does not already
 	// exist, it is created and added to the workspace.
 	Tags []*Tag `jsonapi:"relation,tags,omitempty"`
@@ -682,6 +700,13 @@ type WorkspaceUpdateOptions struct {
 	// If set to true, the workspace will be updated with HYOK enabled.
 	// This can't be set to false, as HYOK is a one-way operation.
 	HYOKEnabled *bool `jsonapi:"attr,hyok-enabled,omitempty"`
+
+	// Optional: The ID of the HYOK configuration to use for this workspace,
+	// overriding the project's default HYOK configuration.
+	// Use jsonapi.NewNullableAttrWithValue to set it, jsonapi.NewNullNullableAttr
+	// to clear the override, and leave it unset to keep the current value.
+	// Note: HYOK is only available in HCP Terraform.
+	HYOKConfigurationID jsonapi.NullableAttr[string] `jsonapi:"attr,hyok-configuration-id,omitempty"`
 
 	// Associated Project with the workspace. If not provided, default project
 	// of the organization will be assigned to the workspace
