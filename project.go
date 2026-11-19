@@ -77,6 +77,11 @@ type Project struct {
 	DefaultAgentPool     *AgentPool             `jsonapi:"relation,default-agent-pool"`
 	EffectiveTagBindings []*EffectiveTagBinding `jsonapi:"relation,effective-tag-bindings"`
 	Organization         *Organization          `jsonapi:"relation,organization"`
+
+	// DefaultHYOKConfiguration is the HYOK configuration used by default for
+	// HYOK-enabled workspaces in the project. Only the ID is populated.
+	// Note: HYOK is only available in HCP Terraform.
+	DefaultHYOKConfiguration *HYOKConfiguration `jsonapi:"relation,default-hyok-configuration"`
 }
 
 // Note: the fields of this struct are bool pointers instead of bool values, in order to simplify support for
@@ -146,6 +151,11 @@ type ProjectCreateOptions struct {
 	// required when DefaultExecutionMode is set to `agent`
 	DefaultAgentPoolID *string `jsonapi:"attr,default-agent-pool-id,omitempty"`
 
+	// Optional: DefaultHYOKConfigurationID is the ID of the HYOK configuration
+	// used by default for HYOK-enabled workspaces in the project.
+	// Note: HYOK is only available in HCP Terraform.
+	DefaultHYOKConfigurationID *string `jsonapi:"attr,default-hyok-configuration-id,omitempty"`
+
 	// Optional: Struct of booleans, which indicate whether the project
 	// specifies its own values for various settings. If you mark a setting as
 	// `false` in this struct, it will clear the project's existing value for
@@ -188,6 +198,13 @@ type ProjectUpdateOptions struct {
 	// Optional: DefaultAgentPoolID default agent pool for workspaces in the project,
 	// required when DefaultExecutionMode is set to `agent`
 	DefaultAgentPoolID *string `jsonapi:"attr,default-agent-pool-id,omitempty"`
+
+	// Optional: DefaultHYOKConfigurationID is the ID of the HYOK configuration
+	// used by default for HYOK-enabled workspaces in the project.
+	// Use jsonapi.NewNullableAttrWithValue to set it, jsonapi.NewNullNullableAttr
+	// to clear it, and leave it unset to keep the current value.
+	// Note: HYOK is only available in HCP Terraform.
+	DefaultHYOKConfigurationID jsonapi.NullableAttr[string] `jsonapi:"attr,default-hyok-configuration-id,omitempty"`
 
 	// Optional: Struct of booleans, which indicate whether the project
 	// specifies its own values for various settings. If you mark a setting as
