@@ -11,6 +11,7 @@ import (
 	"net/http/httptest"
 	"sync/atomic"
 	"testing"
+	"testing/synctest"
 	"time"
 
 	"github.com/hashicorp/go-tfe/v2/api/models"
@@ -148,18 +149,20 @@ func TestUploadConfigTransportErrorAndCancellation(t *testing.T) {
 		require.NotContains(t, err.Error(), secret)
 	})
 	t.Run("deadline interrupts backoff", func(t *testing.T) {
-		client := newTestConfigClient(t)
-		var attempts atomic.Int32
-		client.configUploadClient = &http.Client{Transport: configRoundTripper(func(*http.Request) (*http.Response, error) {
-			attempts.Add(1)
-			return nil, errors.New("retryable")
-		})}
 		pack := testPackedConfig(t)
-		ctx, cancel := context.WithTimeout(t.Context(), 100*time.Millisecond)
-		defer cancel()
-		err := client.UploadConfig(ctx, configUploadVersion("https://example.test/object"), pack)
-		require.ErrorIs(t, err, context.DeadlineExceeded)
-		require.EqualValues(t, 1, attempts.Load())
+		synctest.Test(t, func(t *testing.T) {
+			client := newTestConfigClient(t)
+			attempts := 0
+			client.configUploadClient = &http.Client{Transport: configRoundTripper(func(*http.Request) (*http.Response, error) {
+				attempts++
+				return nil, errors.New("retryable")
+			})}
+			ctx, cancel := context.WithTimeout(t.Context(), 100*time.Millisecond)
+			defer cancel()
+			err := client.UploadConfig(ctx, configUploadVersion("https://example.test/object"), pack)
+			require.ErrorIs(t, err, context.DeadlineExceeded)
+			require.Equal(t, 1, attempts)
+		})
 	})
 }
 
