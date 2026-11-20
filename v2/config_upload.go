@@ -24,8 +24,8 @@ const (
 	configUploadDrain    = 8 << 10
 )
 
-// Share the connection pool without consulting the mutable default transport
-// or using the API client's middleware or custom transport.
+// Keep credential-bearing uploads out of the API middleware and off transports
+// that callers can configure or replace.
 var defaultConfigUploadClient = &http.Client{
 	Transport: &http.Transport{
 		Proxy: http.ProxyFromEnvironment,
@@ -42,13 +42,13 @@ var defaultConfigUploadClient = &http.Client{
 	CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse },
 }
 
-// UploadConfig uploads config to the capability from a configuration-version
-// create response. It neither creates nor waits for a configuration version.
-// The caller remains responsible for closing config.
+// UploadConfig sends config to the upload URL returned when the configuration
+// version was created. It does not create the version or wait for it to be ready.
+// The caller is responsible for closing config.
 //
-// UploadConfig requires HTTPS and does not follow redirects. It uses standard
-// TLS trust and environment proxies, independently of the API HTTPTransport.
-// The upload URL is a credential; do not log the create-response model.
+// UploadConfig requires HTTPS and does not follow redirects. It uses system
+// TLS trust and environment proxies, not [Config.HTTPTransport] or API headers.
+// The upload URL is a credential; do not log the response that contains it.
 func (c *Client) UploadConfig(ctx context.Context, configVersion models.ConfigurationVersionsable, config *PackedConfig) error {
 	if err := ctx.Err(); err != nil {
 		return err
@@ -102,7 +102,7 @@ func configUploadTarget(version models.ConfigurationVersionsable) (string, error
 }
 
 func (c *Client) putConfig(ctx context.Context, target string, data []byte) (bool, error) {
-	// bytes.Reader makes net/http set ContentLength and replay the exact bytes.
+	// A bytes.Reader lets net/http infer the content length.
 	req, err := http.NewRequestWithContext(ctx, http.MethodPut, target, bytes.NewReader(data))
 	if err != nil {
 		return false, errors.New("upload config: cannot create request")

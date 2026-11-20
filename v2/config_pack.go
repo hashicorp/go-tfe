@@ -23,12 +23,11 @@ type packConfigOptions struct {
 	externalDereference bool
 }
 
-// go-slug v0.18.4 can mutate shared defaults while parsing ignore rules.
-// Serialize ignore-enabled SDK calls until the dependency fixes that race.
+// Serialize ignore-enabled packing because go-slug can mutate shared ignore rules.
 var configIgnorePackSlot = make(chan struct{}, 1)
 
-// WithTerraformIgnore controls whether PackConfig applies .terraformignore and
-// go-slug's default exclusions. Both are enabled by default.
+// WithTerraformIgnore controls whether [PackConfig] applies .terraformignore
+// rules and the default exclusions. Passing false disables both.
 func WithTerraformIgnore(enabled bool) PackConfigOption {
 	return func(o *packConfigOptions) { o.terraformIgnore = enabled }
 }
@@ -52,9 +51,8 @@ type PackedConfig struct {
 // rules and default exclusions apply, and external symlinks are rejected.
 //
 // Packing uses memory that grows with the archive and has no default size
-// limit. Pack a stable, trusted source tree. Cancellation is checked before
-// and after packing; it does not interrupt the underlying traversal. Calls
-// with ignore handling enabled are serialized within the SDK.
+// limit. Pack a stable, trusted source tree. Cancellation does not interrupt
+// packing once the directory traversal has started.
 func PackConfig(ctx context.Context, configDir string, opts ...PackConfigOption) (*PackedConfig, error) {
 	if err := ctx.Err(); err != nil {
 		return nil, err
@@ -115,9 +113,8 @@ func PackConfig(ctx context.Context, configDir string, opts ...PackConfigOption)
 	return &PackedConfig{data: buffer.Bytes()}, nil
 }
 
-// Close releases the archive's storage for garbage collection and prevents
-// subsequent uploads. It is safe to call Close more than once. An upload that
-// already holds the archive bytes can continue until its context ends.
+// Close releases the archive and prevents subsequent uploads. It is safe to
+// call Close more than once. Close does not cancel an upload already in progress.
 func (p *PackedConfig) Close() error {
 	if p != nil {
 		p.mu.Lock()
