@@ -212,6 +212,26 @@ for _, key := range headers.ListKeys() {
 }
 ```
 
+## Upload a Configuration Version
+
+Use `tfe.PackConfig(ctx, configDir)` before creating the configuration version.
+It returns an in-memory archive and does not make an API request. Close the
+archive when finished. Pass the create response's `GetData()` value and the
+archive to `client.UploadConfig(ctx, version, pack)`. Do not log the create
+response: its upload URL is a credential. Upload does not wait for the version
+to become usable. To avoid automatically starting a run, explicitly set
+`auto-queue-runs` to `false` in the create request.
+
+Packing applies `.terraformignore` and the default exclusions, rejects a root
+symlink, and rejects links to external targets. SDK callers can opt out of
+ignore handling with `WithTerraformIgnore(false)` or opt in to copying external
+targets with `WithExternalSymlinkDereference()`. The archive has no default size
+limit and stays in memory until released. Cancellation does not interrupt a
+pack already in progress.
+
+Upload uses HTTPS and does not follow redirects. It uses standard TLS trust and
+environment proxies rather than the API client's custom transport or headers.
+
 ## HTTP Response Errors
 
 Unlike Go’s standard HTTP client, this SDK returns errors when an HTTP status codes of 400 or higher is returned. These errors are of type `*tfe.APIError` wrapped in a `*url.Error`. Use `errors.Is` to compare against common failures. It checks the HTTP status code and works through the wrapper:
