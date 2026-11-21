@@ -4,6 +4,7 @@
 package models
 
 import (
+    i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e "time"
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91 "github.com/microsoft/kiota-abstractions-go/serialization"
 )
 
@@ -12,6 +13,8 @@ type ScimIdentities_attributes struct {
     additionalData map[string]any
     // The provisioning status of the user.- "provisioned": User was created via SCIM provisioning- "claimed": User claimed their account or existed before SCIM
     status *ScimIdentities_attributes_status
+    // The time the SCIM identity was last updated.
+    updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The username/identity string from the SCIM provider.
     username *string
 }
@@ -46,6 +49,16 @@ func (m *ScimIdentities_attributes) GetFieldDeserializers()(map[string]func(i878
         }
         return nil
     }
+    res["updated-at"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetTimeValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetUpdatedAt(val)
+        }
+        return nil
+    }
     res["username"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetStringValue()
         if err != nil {
@@ -62,6 +75,11 @@ func (m *ScimIdentities_attributes) GetFieldDeserializers()(map[string]func(i878
 // returns a *ScimIdentities_attributes_status when successful
 func (m *ScimIdentities_attributes) GetStatus()(*ScimIdentities_attributes_status) {
     return m.status
+}
+// GetUpdatedAt gets the updated-at property value. The time the SCIM identity was last updated.
+// returns a *Time when successful
+func (m *ScimIdentities_attributes) GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
+    return m.updatedAt
 }
 // GetUsername gets the username property value. The username/identity string from the SCIM provider.
 // returns a *string when successful
@@ -86,6 +104,10 @@ func (m *ScimIdentities_attributes) SetAdditionalData(value map[string]any)() {
 func (m *ScimIdentities_attributes) SetStatus(value *ScimIdentities_attributes_status)() {
     m.status = value
 }
+// SetUpdatedAt sets the updated-at property value. The time the SCIM identity was last updated.
+func (m *ScimIdentities_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
+    m.updatedAt = value
+}
 // SetUsername sets the username property value. The username/identity string from the SCIM provider.
 func (m *ScimIdentities_attributes) SetUsername(value *string)() {
     m.username = value
@@ -94,7 +116,9 @@ type ScimIdentities_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetStatus()(*ScimIdentities_attributes_status)
+    GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetUsername()(*string)
     SetStatus(value *ScimIdentities_attributes_status)()
+    SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetUsername(value *string)()
 }

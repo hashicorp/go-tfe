@@ -14,6 +14,8 @@ type VcsRepoCheck_attributes struct {
     exists *bool
     // The repository identifier that was checked
     identifier *string
+    // The repository name
+    name *string
 }
 // NewVcsRepoCheck_attributes instantiates a new VcsRepoCheck_attributes and sets the default values.
 func NewVcsRepoCheck_attributes()(*VcsRepoCheck_attributes) {
@@ -61,12 +63,27 @@ func (m *VcsRepoCheck_attributes) GetFieldDeserializers()(map[string]func(i878a8
         }
         return nil
     }
+    res["name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetName(val)
+        }
+        return nil
+    }
     return res
 }
 // GetIdentifier gets the identifier property value. The repository identifier that was checked
 // returns a *string when successful
 func (m *VcsRepoCheck_attributes) GetIdentifier()(*string) {
     return m.identifier
+}
+// GetName gets the name property value. The repository name
+// returns a *string when successful
+func (m *VcsRepoCheck_attributes) GetName()(*string) {
+    return m.name
 }
 // Serialize serializes information the current object
 func (m *VcsRepoCheck_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
@@ -78,6 +95,12 @@ func (m *VcsRepoCheck_attributes) Serialize(writer i878a80d2330e89d26896388a3f48
     }
     {
         err := writer.WriteStringValue("identifier", m.GetIdentifier())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteStringValue("name", m.GetName())
         if err != nil {
             return err
         }
@@ -102,11 +125,17 @@ func (m *VcsRepoCheck_attributes) SetExists(value *bool)() {
 func (m *VcsRepoCheck_attributes) SetIdentifier(value *string)() {
     m.identifier = value
 }
+// SetName sets the name property value. The repository name
+func (m *VcsRepoCheck_attributes) SetName(value *string)() {
+    m.name = value
+}
 type VcsRepoCheck_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetExists()(*bool)
     GetIdentifier()(*string)
+    GetName()(*string)
     SetExists(value *bool)()
     SetIdentifier(value *string)()
+    SetName(value *string)()
 }
