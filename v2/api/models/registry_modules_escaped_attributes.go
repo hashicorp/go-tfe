@@ -13,6 +13,8 @@ type RegistryModules_attributes struct {
     additionalData map[string]any
     // The createdAt property
     createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+    // External ID of the latest test run. Only present for branch-based modules.
+    latestTestRunId *string
     // The name property
     name *string
     // The namespace property
@@ -27,16 +29,20 @@ type RegistryModules_attributes struct {
     publishingMechanism *RegistryModules_attributes_publishingMechanism
     // The registryName property
     registryName *string
+    // Versions that have been revoked. Only present when the requester can revoke module versions.
+    revokedVersions []string
     // The status property
     status *string
     // Optional test configuration for the module. Present for branch-basedmodules and non-VCS private modules, and `null` when the module has notest configuration. Supplying `tests-enabled`, `agent-execution-mode`,or `agent-pool-id` configures testing for the module; when omitted,testing defaults to disabled with remote execution.
     testConfig RegistryModules_attributes_testConfigable
     // The updatedAt property
     updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
-    // The VCS connection and publishing settings for the module. Supplying achanged `identifier`, `oauth-token-id`, or `github-app-installation-id`re-points the module to a different VCS source; supplying only`branch`, `tags`, or `tag-prefix` changes the publishing mechanism inplace.
+    // The VCS connection and publishing settings for the module. Supplying achanged `identifier`, `oauth-token-id`, or `github-app-installation-id`re-points the module to a different VCS source; supplying only`branch`, `tags`, `tag-prefix`, or `source-directory` changes thepublishing settings in place.
     vcsRepo RegistryModules_attributes_vcsRepoable
     // The versionStatuses property
     versionStatuses []RegistryModules_attributes_versionStatusesable
+    // Tag values bound to module versions, ordered by version descending.
+    versionTags []RegistryModules_attributes_versionTagsable
 }
 // NewRegistryModules_attributes instantiates a new RegistryModules_attributes and sets the default values.
 func NewRegistryModules_attributes()(*RegistryModules_attributes) {
@@ -71,6 +77,16 @@ func (m *RegistryModules_attributes) GetFieldDeserializers()(map[string]func(i87
         }
         if val != nil {
             m.SetCreatedAt(val)
+        }
+        return nil
+    }
+    res["latest-test-run-id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetLatestTestRunId(val)
         }
         return nil
     }
@@ -144,6 +160,22 @@ func (m *RegistryModules_attributes) GetFieldDeserializers()(map[string]func(i87
         }
         return nil
     }
+    res["revoked-versions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfPrimitiveValues("string")
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]string, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = *(v.(*string))
+                }
+            }
+            m.SetRevokedVersions(res)
+        }
+        return nil
+    }
     res["status"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetStringValue()
         if err != nil {
@@ -200,7 +232,28 @@ func (m *RegistryModules_attributes) GetFieldDeserializers()(map[string]func(i87
         }
         return nil
     }
+    res["version-tags"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(CreateRegistryModules_attributes_versionTagsFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]RegistryModules_attributes_versionTagsable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(RegistryModules_attributes_versionTagsable)
+                }
+            }
+            m.SetVersionTags(res)
+        }
+        return nil
+    }
     return res
+}
+// GetLatestTestRunId gets the latest-test-run-id property value. External ID of the latest test run. Only present for branch-based modules.
+// returns a *string when successful
+func (m *RegistryModules_attributes) GetLatestTestRunId()(*string) {
+    return m.latestTestRunId
 }
 // GetName gets the name property value. The name property
 // returns a *string when successful
@@ -237,6 +290,11 @@ func (m *RegistryModules_attributes) GetPublishingMechanism()(*RegistryModules_a
 func (m *RegistryModules_attributes) GetRegistryName()(*string) {
     return m.registryName
 }
+// GetRevokedVersions gets the revoked-versions property value. Versions that have been revoked. Only present when the requester can revoke module versions.
+// returns a []string when successful
+func (m *RegistryModules_attributes) GetRevokedVersions()([]string) {
+    return m.revokedVersions
+}
 // GetStatus gets the status property value. The status property
 // returns a *string when successful
 func (m *RegistryModules_attributes) GetStatus()(*string) {
@@ -252,7 +310,7 @@ func (m *RegistryModules_attributes) GetTestConfig()(RegistryModules_attributes_
 func (m *RegistryModules_attributes) GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
     return m.updatedAt
 }
-// GetVcsRepo gets the vcs-repo property value. The VCS connection and publishing settings for the module. Supplying achanged `identifier`, `oauth-token-id`, or `github-app-installation-id`re-points the module to a different VCS source; supplying only`branch`, `tags`, or `tag-prefix` changes the publishing mechanism inplace.
+// GetVcsRepo gets the vcs-repo property value. The VCS connection and publishing settings for the module. Supplying achanged `identifier`, `oauth-token-id`, or `github-app-installation-id`re-points the module to a different VCS source; supplying only`branch`, `tags`, `tag-prefix`, or `source-directory` changes thepublishing settings in place.
 // returns a RegistryModules_attributes_vcsRepoable when successful
 func (m *RegistryModules_attributes) GetVcsRepo()(RegistryModules_attributes_vcsRepoable) {
     return m.vcsRepo
@@ -261,6 +319,11 @@ func (m *RegistryModules_attributes) GetVcsRepo()(RegistryModules_attributes_vcs
 // returns a []RegistryModules_attributes_versionStatusesable when successful
 func (m *RegistryModules_attributes) GetVersionStatuses()([]RegistryModules_attributes_versionStatusesable) {
     return m.versionStatuses
+}
+// GetVersionTags gets the version-tags property value. Tag values bound to module versions, ordered by version descending.
+// returns a []RegistryModules_attributes_versionTagsable when successful
+func (m *RegistryModules_attributes) GetVersionTags()([]RegistryModules_attributes_versionTagsable) {
+    return m.versionTags
 }
 // Serialize serializes information the current object
 func (m *RegistryModules_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
@@ -298,6 +361,10 @@ func (m *RegistryModules_attributes) SetAdditionalData(value map[string]any)() {
 func (m *RegistryModules_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.createdAt = value
 }
+// SetLatestTestRunId sets the latest-test-run-id property value. External ID of the latest test run. Only present for branch-based modules.
+func (m *RegistryModules_attributes) SetLatestTestRunId(value *string)() {
+    m.latestTestRunId = value
+}
 // SetName sets the name property value. The name property
 func (m *RegistryModules_attributes) SetName(value *string)() {
     m.name = value
@@ -326,6 +393,10 @@ func (m *RegistryModules_attributes) SetPublishingMechanism(value *RegistryModul
 func (m *RegistryModules_attributes) SetRegistryName(value *string)() {
     m.registryName = value
 }
+// SetRevokedVersions sets the revoked-versions property value. Versions that have been revoked. Only present when the requester can revoke module versions.
+func (m *RegistryModules_attributes) SetRevokedVersions(value []string)() {
+    m.revokedVersions = value
+}
 // SetStatus sets the status property value. The status property
 func (m *RegistryModules_attributes) SetStatus(value *string)() {
     m.status = value
@@ -338,7 +409,7 @@ func (m *RegistryModules_attributes) SetTestConfig(value RegistryModules_attribu
 func (m *RegistryModules_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.updatedAt = value
 }
-// SetVcsRepo sets the vcs-repo property value. The VCS connection and publishing settings for the module. Supplying achanged `identifier`, `oauth-token-id`, or `github-app-installation-id`re-points the module to a different VCS source; supplying only`branch`, `tags`, or `tag-prefix` changes the publishing mechanism inplace.
+// SetVcsRepo sets the vcs-repo property value. The VCS connection and publishing settings for the module. Supplying achanged `identifier`, `oauth-token-id`, or `github-app-installation-id`re-points the module to a different VCS source; supplying only`branch`, `tags`, `tag-prefix`, or `source-directory` changes thepublishing settings in place.
 func (m *RegistryModules_attributes) SetVcsRepo(value RegistryModules_attributes_vcsRepoable)() {
     m.vcsRepo = value
 }
@@ -346,10 +417,15 @@ func (m *RegistryModules_attributes) SetVcsRepo(value RegistryModules_attributes
 func (m *RegistryModules_attributes) SetVersionStatuses(value []RegistryModules_attributes_versionStatusesable)() {
     m.versionStatuses = value
 }
+// SetVersionTags sets the version-tags property value. Tag values bound to module versions, ordered by version descending.
+func (m *RegistryModules_attributes) SetVersionTags(value []RegistryModules_attributes_versionTagsable)() {
+    m.versionTags = value
+}
 type RegistryModules_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+    GetLatestTestRunId()(*string)
     GetName()(*string)
     GetNamespace()(*string)
     GetNoCode()(*bool)
@@ -357,12 +433,15 @@ type RegistryModules_attributesable interface {
     GetProvider()(*string)
     GetPublishingMechanism()(*RegistryModules_attributes_publishingMechanism)
     GetRegistryName()(*string)
+    GetRevokedVersions()([]string)
     GetStatus()(*string)
     GetTestConfig()(RegistryModules_attributes_testConfigable)
     GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetVcsRepo()(RegistryModules_attributes_vcsRepoable)
     GetVersionStatuses()([]RegistryModules_attributes_versionStatusesable)
+    GetVersionTags()([]RegistryModules_attributes_versionTagsable)
     SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
+    SetLatestTestRunId(value *string)()
     SetName(value *string)()
     SetNamespace(value *string)()
     SetNoCode(value *bool)()
@@ -370,9 +449,11 @@ type RegistryModules_attributesable interface {
     SetProvider(value *string)()
     SetPublishingMechanism(value *RegistryModules_attributes_publishingMechanism)()
     SetRegistryName(value *string)()
+    SetRevokedVersions(value []string)()
     SetStatus(value *string)()
     SetTestConfig(value RegistryModules_attributes_testConfigable)()
     SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetVcsRepo(value RegistryModules_attributes_vcsRepoable)()
     SetVersionStatuses(value []RegistryModules_attributes_versionStatusesable)()
+    SetVersionTags(value []RegistryModules_attributes_versionTagsable)()
 }

@@ -12,16 +12,36 @@ type AgentPools_relationships struct {
     additionalData map[string]any
     // The agents property
     agents Links_relatedable
+    // The allowedModules property
+    allowedModules RegistryModulesHasManyable
     // The allowedProjects property
     allowedProjects ProjectsHasManyable
+    // The allowedStacks property
+    allowedStacks StacksHasManyable
     // The allowedWorkspaces property
     allowedWorkspaces WorkspacesHasManyable
     // The authenticationTokens property
     authenticationTokens Links_relatedable
+    // The cidrRangeLists property
+    cidrRangeLists CidrRangeListsHasManyable
+    // The cidrRanges property
+    cidrRanges CidrRangesHasManyable
+    // The excludedModules property
+    excludedModules RegistryModulesHasManyable
+    // The excludedStacks property
+    excludedStacks StacksHasManyable
     // The excludedWorkspaces property
     excludedWorkspaces WorkspacesHasManyable
+    // The modules property
+    modules RegistryModulesHasManyable
+    // The oauthClients property
+    oauthClients Links_relatedable
     // The organization property
     organization OrganizationsHasOneable
+    // The projects property
+    projects ProjectsHasManyable
+    // The stacks property
+    stacks StacksHasManyable
     // The workspaces property
     workspaces WorkspacesHasManyable
 }
@@ -47,10 +67,20 @@ func (m *AgentPools_relationships) GetAdditionalData()(map[string]any) {
 func (m *AgentPools_relationships) GetAgents()(Links_relatedable) {
     return m.agents
 }
+// GetAllowedModules gets the allowed-modules property value. The allowedModules property
+// returns a RegistryModulesHasManyable when successful
+func (m *AgentPools_relationships) GetAllowedModules()(RegistryModulesHasManyable) {
+    return m.allowedModules
+}
 // GetAllowedProjects gets the allowed-projects property value. The allowedProjects property
 // returns a ProjectsHasManyable when successful
 func (m *AgentPools_relationships) GetAllowedProjects()(ProjectsHasManyable) {
     return m.allowedProjects
+}
+// GetAllowedStacks gets the allowed-stacks property value. The allowedStacks property
+// returns a StacksHasManyable when successful
+func (m *AgentPools_relationships) GetAllowedStacks()(StacksHasManyable) {
+    return m.allowedStacks
 }
 // GetAllowedWorkspaces gets the allowed-workspaces property value. The allowedWorkspaces property
 // returns a WorkspacesHasManyable when successful
@@ -61,6 +91,26 @@ func (m *AgentPools_relationships) GetAllowedWorkspaces()(WorkspacesHasManyable)
 // returns a Links_relatedable when successful
 func (m *AgentPools_relationships) GetAuthenticationTokens()(Links_relatedable) {
     return m.authenticationTokens
+}
+// GetCidrRangeLists gets the cidr-range-lists property value. The cidrRangeLists property
+// returns a CidrRangeListsHasManyable when successful
+func (m *AgentPools_relationships) GetCidrRangeLists()(CidrRangeListsHasManyable) {
+    return m.cidrRangeLists
+}
+// GetCidrRanges gets the cidr-ranges property value. The cidrRanges property
+// returns a CidrRangesHasManyable when successful
+func (m *AgentPools_relationships) GetCidrRanges()(CidrRangesHasManyable) {
+    return m.cidrRanges
+}
+// GetExcludedModules gets the excluded-modules property value. The excludedModules property
+// returns a RegistryModulesHasManyable when successful
+func (m *AgentPools_relationships) GetExcludedModules()(RegistryModulesHasManyable) {
+    return m.excludedModules
+}
+// GetExcludedStacks gets the excluded-stacks property value. The excludedStacks property
+// returns a StacksHasManyable when successful
+func (m *AgentPools_relationships) GetExcludedStacks()(StacksHasManyable) {
+    return m.excludedStacks
 }
 // GetExcludedWorkspaces gets the excluded-workspaces property value. The excludedWorkspaces property
 // returns a WorkspacesHasManyable when successful
@@ -81,6 +131,16 @@ func (m *AgentPools_relationships) GetFieldDeserializers()(map[string]func(i878a
         }
         return nil
     }
+    res["allowed-modules"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateRegistryModulesHasManyFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetAllowedModules(val.(RegistryModulesHasManyable))
+        }
+        return nil
+    }
     res["allowed-projects"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateProjectsHasManyFromDiscriminatorValue)
         if err != nil {
@@ -88,6 +148,16 @@ func (m *AgentPools_relationships) GetFieldDeserializers()(map[string]func(i878a
         }
         if val != nil {
             m.SetAllowedProjects(val.(ProjectsHasManyable))
+        }
+        return nil
+    }
+    res["allowed-stacks"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateStacksHasManyFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetAllowedStacks(val.(StacksHasManyable))
         }
         return nil
     }
@@ -111,6 +181,46 @@ func (m *AgentPools_relationships) GetFieldDeserializers()(map[string]func(i878a
         }
         return nil
     }
+    res["cidr-range-lists"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateCidrRangeListsHasManyFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetCidrRangeLists(val.(CidrRangeListsHasManyable))
+        }
+        return nil
+    }
+    res["cidr-ranges"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateCidrRangesHasManyFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetCidrRanges(val.(CidrRangesHasManyable))
+        }
+        return nil
+    }
+    res["excluded-modules"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateRegistryModulesHasManyFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetExcludedModules(val.(RegistryModulesHasManyable))
+        }
+        return nil
+    }
+    res["excluded-stacks"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateStacksHasManyFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetExcludedStacks(val.(StacksHasManyable))
+        }
+        return nil
+    }
     res["excluded-workspaces"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateWorkspacesHasManyFromDiscriminatorValue)
         if err != nil {
@@ -121,6 +231,26 @@ func (m *AgentPools_relationships) GetFieldDeserializers()(map[string]func(i878a
         }
         return nil
     }
+    res["modules"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateRegistryModulesHasManyFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetModules(val.(RegistryModulesHasManyable))
+        }
+        return nil
+    }
+    res["oauth-clients"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateLinks_relatedFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetOauthClients(val.(Links_relatedable))
+        }
+        return nil
+    }
     res["organization"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateOrganizationsHasOneFromDiscriminatorValue)
         if err != nil {
@@ -128,6 +258,26 @@ func (m *AgentPools_relationships) GetFieldDeserializers()(map[string]func(i878a
         }
         if val != nil {
             m.SetOrganization(val.(OrganizationsHasOneable))
+        }
+        return nil
+    }
+    res["projects"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateProjectsHasManyFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetProjects(val.(ProjectsHasManyable))
+        }
+        return nil
+    }
+    res["stacks"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateStacksHasManyFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetStacks(val.(StacksHasManyable))
         }
         return nil
     }
@@ -143,10 +293,30 @@ func (m *AgentPools_relationships) GetFieldDeserializers()(map[string]func(i878a
     }
     return res
 }
+// GetModules gets the modules property value. The modules property
+// returns a RegistryModulesHasManyable when successful
+func (m *AgentPools_relationships) GetModules()(RegistryModulesHasManyable) {
+    return m.modules
+}
+// GetOauthClients gets the oauth-clients property value. The oauthClients property
+// returns a Links_relatedable when successful
+func (m *AgentPools_relationships) GetOauthClients()(Links_relatedable) {
+    return m.oauthClients
+}
 // GetOrganization gets the organization property value. The organization property
 // returns a OrganizationsHasOneable when successful
 func (m *AgentPools_relationships) GetOrganization()(OrganizationsHasOneable) {
     return m.organization
+}
+// GetProjects gets the projects property value. The projects property
+// returns a ProjectsHasManyable when successful
+func (m *AgentPools_relationships) GetProjects()(ProjectsHasManyable) {
+    return m.projects
+}
+// GetStacks gets the stacks property value. The stacks property
+// returns a StacksHasManyable when successful
+func (m *AgentPools_relationships) GetStacks()(StacksHasManyable) {
+    return m.stacks
 }
 // GetWorkspaces gets the workspaces property value. The workspaces property
 // returns a WorkspacesHasManyable when successful
@@ -162,7 +332,19 @@ func (m *AgentPools_relationships) Serialize(writer i878a80d2330e89d26896388a3f4
         }
     }
     {
+        err := writer.WriteObjectValue("allowed-modules", m.GetAllowedModules())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteObjectValue("allowed-projects", m.GetAllowedProjects())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("allowed-stacks", m.GetAllowedStacks())
         if err != nil {
             return err
         }
@@ -180,13 +362,61 @@ func (m *AgentPools_relationships) Serialize(writer i878a80d2330e89d26896388a3f4
         }
     }
     {
+        err := writer.WriteObjectValue("cidr-range-lists", m.GetCidrRangeLists())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("cidr-ranges", m.GetCidrRanges())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("excluded-modules", m.GetExcludedModules())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("excluded-stacks", m.GetExcludedStacks())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteObjectValue("excluded-workspaces", m.GetExcludedWorkspaces())
         if err != nil {
             return err
         }
     }
     {
+        err := writer.WriteObjectValue("modules", m.GetModules())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("oauth-clients", m.GetOauthClients())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteObjectValue("organization", m.GetOrganization())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("projects", m.GetProjects())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("stacks", m.GetStacks())
         if err != nil {
             return err
         }
@@ -213,9 +443,17 @@ func (m *AgentPools_relationships) SetAdditionalData(value map[string]any)() {
 func (m *AgentPools_relationships) SetAgents(value Links_relatedable)() {
     m.agents = value
 }
+// SetAllowedModules sets the allowed-modules property value. The allowedModules property
+func (m *AgentPools_relationships) SetAllowedModules(value RegistryModulesHasManyable)() {
+    m.allowedModules = value
+}
 // SetAllowedProjects sets the allowed-projects property value. The allowedProjects property
 func (m *AgentPools_relationships) SetAllowedProjects(value ProjectsHasManyable)() {
     m.allowedProjects = value
+}
+// SetAllowedStacks sets the allowed-stacks property value. The allowedStacks property
+func (m *AgentPools_relationships) SetAllowedStacks(value StacksHasManyable)() {
+    m.allowedStacks = value
 }
 // SetAllowedWorkspaces sets the allowed-workspaces property value. The allowedWorkspaces property
 func (m *AgentPools_relationships) SetAllowedWorkspaces(value WorkspacesHasManyable)() {
@@ -225,13 +463,45 @@ func (m *AgentPools_relationships) SetAllowedWorkspaces(value WorkspacesHasManya
 func (m *AgentPools_relationships) SetAuthenticationTokens(value Links_relatedable)() {
     m.authenticationTokens = value
 }
+// SetCidrRangeLists sets the cidr-range-lists property value. The cidrRangeLists property
+func (m *AgentPools_relationships) SetCidrRangeLists(value CidrRangeListsHasManyable)() {
+    m.cidrRangeLists = value
+}
+// SetCidrRanges sets the cidr-ranges property value. The cidrRanges property
+func (m *AgentPools_relationships) SetCidrRanges(value CidrRangesHasManyable)() {
+    m.cidrRanges = value
+}
+// SetExcludedModules sets the excluded-modules property value. The excludedModules property
+func (m *AgentPools_relationships) SetExcludedModules(value RegistryModulesHasManyable)() {
+    m.excludedModules = value
+}
+// SetExcludedStacks sets the excluded-stacks property value. The excludedStacks property
+func (m *AgentPools_relationships) SetExcludedStacks(value StacksHasManyable)() {
+    m.excludedStacks = value
+}
 // SetExcludedWorkspaces sets the excluded-workspaces property value. The excludedWorkspaces property
 func (m *AgentPools_relationships) SetExcludedWorkspaces(value WorkspacesHasManyable)() {
     m.excludedWorkspaces = value
 }
+// SetModules sets the modules property value. The modules property
+func (m *AgentPools_relationships) SetModules(value RegistryModulesHasManyable)() {
+    m.modules = value
+}
+// SetOauthClients sets the oauth-clients property value. The oauthClients property
+func (m *AgentPools_relationships) SetOauthClients(value Links_relatedable)() {
+    m.oauthClients = value
+}
 // SetOrganization sets the organization property value. The organization property
 func (m *AgentPools_relationships) SetOrganization(value OrganizationsHasOneable)() {
     m.organization = value
+}
+// SetProjects sets the projects property value. The projects property
+func (m *AgentPools_relationships) SetProjects(value ProjectsHasManyable)() {
+    m.projects = value
+}
+// SetStacks sets the stacks property value. The stacks property
+func (m *AgentPools_relationships) SetStacks(value StacksHasManyable)() {
+    m.stacks = value
 }
 // SetWorkspaces sets the workspaces property value. The workspaces property
 func (m *AgentPools_relationships) SetWorkspaces(value WorkspacesHasManyable)() {
@@ -241,17 +511,37 @@ type AgentPools_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetAgents()(Links_relatedable)
+    GetAllowedModules()(RegistryModulesHasManyable)
     GetAllowedProjects()(ProjectsHasManyable)
+    GetAllowedStacks()(StacksHasManyable)
     GetAllowedWorkspaces()(WorkspacesHasManyable)
     GetAuthenticationTokens()(Links_relatedable)
+    GetCidrRangeLists()(CidrRangeListsHasManyable)
+    GetCidrRanges()(CidrRangesHasManyable)
+    GetExcludedModules()(RegistryModulesHasManyable)
+    GetExcludedStacks()(StacksHasManyable)
     GetExcludedWorkspaces()(WorkspacesHasManyable)
+    GetModules()(RegistryModulesHasManyable)
+    GetOauthClients()(Links_relatedable)
     GetOrganization()(OrganizationsHasOneable)
+    GetProjects()(ProjectsHasManyable)
+    GetStacks()(StacksHasManyable)
     GetWorkspaces()(WorkspacesHasManyable)
     SetAgents(value Links_relatedable)()
+    SetAllowedModules(value RegistryModulesHasManyable)()
     SetAllowedProjects(value ProjectsHasManyable)()
+    SetAllowedStacks(value StacksHasManyable)()
     SetAllowedWorkspaces(value WorkspacesHasManyable)()
     SetAuthenticationTokens(value Links_relatedable)()
+    SetCidrRangeLists(value CidrRangeListsHasManyable)()
+    SetCidrRanges(value CidrRangesHasManyable)()
+    SetExcludedModules(value RegistryModulesHasManyable)()
+    SetExcludedStacks(value StacksHasManyable)()
     SetExcludedWorkspaces(value WorkspacesHasManyable)()
+    SetModules(value RegistryModulesHasManyable)()
+    SetOauthClients(value Links_relatedable)()
     SetOrganization(value OrganizationsHasOneable)()
+    SetProjects(value ProjectsHasManyable)()
+    SetStacks(value StacksHasManyable)()
     SetWorkspaces(value WorkspacesHasManyable)()
 }
