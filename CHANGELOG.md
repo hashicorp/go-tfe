@@ -1,3 +1,7 @@
+# Unreleased
+
+* Enhancement: Add `PackConfig` and `Client.UploadConfig` to package a Terraform config directory in memory and upload it to a configuration version.
+
 # v2.16.0
 
 * Enhancement: The latest API operations are available.

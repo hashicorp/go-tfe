@@ -35,7 +35,7 @@ type Config struct {
 	// API token used to access the Terraform Enterprise API.
 	Token string
 
-	// Headers that will be added to every request.
+	// Headers that will be added to API requests, excluding capability uploads.
 	Headers http.Header
 
 	// RetryHook is invoked each time a request is retried.
@@ -80,6 +80,8 @@ type Client struct {
 	headers http.Header
 	adapter *TFERequestAdapter
 	API     *api.ApiClient
+
+	configUploadClient *http.Client
 
 	Meta Meta
 }
@@ -160,10 +162,11 @@ func NewClient(cfg *Config) (*Client, error) {
 
 	// Create the client.
 	client := &Client{
-		baseURL: baseURL,
-		token:   config.Token,
-		headers: config.Headers,
-		adapter: adapter,
+		baseURL:            baseURL,
+		token:              config.Token,
+		headers:            config.Headers,
+		adapter:            adapter,
+		configUploadClient: defaultConfigUploadClient,
 	}
 
 	client.API = api.NewApiClient(adapter)
