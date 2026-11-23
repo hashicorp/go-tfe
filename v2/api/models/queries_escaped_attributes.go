@@ -21,6 +21,8 @@ type Queries_attributes struct {
     forceCancelAvailableAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
     // The generateConfigOut property
     generateConfigOut *bool
+    // Per-list-block result summaries. Only present on the show endpoint.
+    listCompletions []Queries_attributes_listCompletionsable
     // The logReadUrl property
     logReadUrl *string
     // The permissions property
@@ -37,6 +39,8 @@ type Queries_attributes struct {
     statusTimestamps Queries_attributes_statusTimestampsable
     // The updatedAt property
     updatedAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+    // Run variables supplied for the query.
+    variables []Queries_attributes_variablesable
 }
 // NewQueries_attributes instantiates a new Queries_attributes and sets the default values.
 func NewQueries_attributes()(*Queries_attributes) {
@@ -121,6 +125,22 @@ func (m *Queries_attributes) GetFieldDeserializers()(map[string]func(i878a80d233
         }
         if val != nil {
             m.SetGenerateConfigOut(val)
+        }
+        return nil
+    }
+    res["list-completions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(CreateQueries_attributes_listCompletionsFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]Queries_attributes_listCompletionsable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(Queries_attributes_listCompletionsable)
+                }
+            }
+            m.SetListCompletions(res)
         }
         return nil
     }
@@ -210,6 +230,22 @@ func (m *Queries_attributes) GetFieldDeserializers()(map[string]func(i878a80d233
         }
         return nil
     }
+    res["variables"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetCollectionOfObjectValues(CreateQueries_attributes_variablesFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            res := make([]Queries_attributes_variablesable, len(val))
+            for i, v := range val {
+                if v != nil {
+                    res[i] = v.(Queries_attributes_variablesable)
+                }
+            }
+            m.SetVariables(res)
+        }
+        return nil
+    }
     return res
 }
 // GetForceCancelAvailableAt gets the force-cancel-available-at property value. The forceCancelAvailableAt property
@@ -221,6 +257,11 @@ func (m *Queries_attributes) GetForceCancelAvailableAt()(*i336074805fc853987abe6
 // returns a *bool when successful
 func (m *Queries_attributes) GetGenerateConfigOut()(*bool) {
     return m.generateConfigOut
+}
+// GetListCompletions gets the list-completions property value. Per-list-block result summaries. Only present on the show endpoint.
+// returns a []Queries_attributes_listCompletionsable when successful
+func (m *Queries_attributes) GetListCompletions()([]Queries_attributes_listCompletionsable) {
+    return m.listCompletions
 }
 // GetLogReadUrl gets the log-read-url property value. The logReadUrl property
 // returns a *string when successful
@@ -261,6 +302,11 @@ func (m *Queries_attributes) GetStatusTimestamps()(Queries_attributes_statusTime
 // returns a *Time when successful
 func (m *Queries_attributes) GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
     return m.updatedAt
+}
+// GetVariables gets the variables property value. Run variables supplied for the query.
+// returns a []Queries_attributes_variablesable when successful
+func (m *Queries_attributes) GetVariables()([]Queries_attributes_variablesable) {
+    return m.variables
 }
 // Serialize serializes information the current object
 func (m *Queries_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
@@ -308,6 +354,18 @@ func (m *Queries_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef2
             return err
         }
     }
+    if m.GetVariables() != nil {
+        cast := make([]i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable, len(m.GetVariables()))
+        for i, v := range m.GetVariables() {
+            if v != nil {
+                cast[i] = v.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable)
+            }
+        }
+        err := writer.WriteCollectionOfObjectValues("variables", cast)
+        if err != nil {
+            return err
+        }
+    }
     {
         err := writer.WriteAdditionalData(m.GetAdditionalData())
         if err != nil {
@@ -339,6 +397,10 @@ func (m *Queries_attributes) SetForceCancelAvailableAt(value *i336074805fc853987
 // SetGenerateConfigOut sets the generate-config-out property value. The generateConfigOut property
 func (m *Queries_attributes) SetGenerateConfigOut(value *bool)() {
     m.generateConfigOut = value
+}
+// SetListCompletions sets the list-completions property value. Per-list-block result summaries. Only present on the show endpoint.
+func (m *Queries_attributes) SetListCompletions(value []Queries_attributes_listCompletionsable)() {
+    m.listCompletions = value
 }
 // SetLogReadUrl sets the log-read-url property value. The logReadUrl property
 func (m *Queries_attributes) SetLogReadUrl(value *string)() {
@@ -372,6 +434,10 @@ func (m *Queries_attributes) SetStatusTimestamps(value Queries_attributes_status
 func (m *Queries_attributes) SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.updatedAt = value
 }
+// SetVariables sets the variables property value. Run variables supplied for the query.
+func (m *Queries_attributes) SetVariables(value []Queries_attributes_variablesable)() {
+    m.variables = value
+}
 type Queries_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
@@ -380,6 +446,7 @@ type Queries_attributesable interface {
     GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetForceCancelAvailableAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetGenerateConfigOut()(*bool)
+    GetListCompletions()([]Queries_attributes_listCompletionsable)
     GetLogReadUrl()(*string)
     GetPermissions()(Queries_attributes_permissionsable)
     GetPolicyPaths()([]string)
@@ -388,11 +455,13 @@ type Queries_attributesable interface {
     GetStatus()(*Queries_attributes_status)
     GetStatusTimestamps()(Queries_attributes_statusTimestampsable)
     GetUpdatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+    GetVariables()([]Queries_attributes_variablesable)
     SetActions(value Queries_attributes_actionsable)()
     SetCanceledAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetForceCancelAvailableAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetGenerateConfigOut(value *bool)()
+    SetListCompletions(value []Queries_attributes_listCompletionsable)()
     SetLogReadUrl(value *string)()
     SetPermissions(value Queries_attributes_permissionsable)()
     SetPolicyPaths(value []string)()
@@ -401,4 +470,5 @@ type Queries_attributesable interface {
     SetStatus(value *Queries_attributes_status)()
     SetStatusTimestamps(value Queries_attributes_statusTimestampsable)()
     SetUpdatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
+    SetVariables(value []Queries_attributes_variablesable)()
 }
