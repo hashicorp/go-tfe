@@ -15,16 +15,24 @@ type TaskResults_attributes struct {
     agentPoolId *string
     // The createdAt property
     createdAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+    // Duration of the task result in milliseconds, from running to its final status. Null until it finishes.
+    duration *int32
     // Whether the associated run is speculative (plan-only).
     isSpeculative *bool
     // A message describing the result of the run task execution.
     message *string
+    // Enforcement level of the source, falling back to the workspace task enforcement level.
+    sourceEnforcementLevel *TaskResults_attributes_sourceEnforcementLevel
+    // External ID of the task configuration or workspace task that produced this result.
+    sourceId *string
     // The run stage during which this task result was created.
     stage *string
     // The status property
     status *TaskResults_attributes_status
     // A map of status names to timestamps indicating when the task result entered each status. Keys are formatted as "{status}-at".
     statusTimestamps TaskResults_attributes_statusTimestampsable
+    // The taskCategory property
+    taskCategory *TaskResults_attributes_taskCategory
     // The external ID of the run task.
     taskId *string
     // The name of the run task.
@@ -69,6 +77,11 @@ func (m *TaskResults_attributes) GetAgentPoolId()(*string) {
 func (m *TaskResults_attributes) GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
     return m.createdAt
 }
+// GetDuration gets the duration property value. Duration of the task result in milliseconds, from running to its final status. Null until it finishes.
+// returns a *int32 when successful
+func (m *TaskResults_attributes) GetDuration()(*int32) {
+    return m.duration
+}
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *TaskResults_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
@@ -93,6 +106,16 @@ func (m *TaskResults_attributes) GetFieldDeserializers()(map[string]func(i878a80
         }
         return nil
     }
+    res["duration"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetDuration(val)
+        }
+        return nil
+    }
     res["is-speculative"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetBoolValue()
         if err != nil {
@@ -110,6 +133,26 @@ func (m *TaskResults_attributes) GetFieldDeserializers()(map[string]func(i878a80
         }
         if val != nil {
             m.SetMessage(val)
+        }
+        return nil
+    }
+    res["source-enforcement-level"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetEnumValue(ParseTaskResults_attributes_sourceEnforcementLevel)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetSourceEnforcementLevel(val.(*TaskResults_attributes_sourceEnforcementLevel))
+        }
+        return nil
+    }
+    res["source-id"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetSourceId(val)
         }
         return nil
     }
@@ -140,6 +183,16 @@ func (m *TaskResults_attributes) GetFieldDeserializers()(map[string]func(i878a80
         }
         if val != nil {
             m.SetStatusTimestamps(val.(TaskResults_attributes_statusTimestampsable))
+        }
+        return nil
+    }
+    res["task-category"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetEnumValue(ParseTaskResults_attributes_taskCategory)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetTaskCategory(val.(*TaskResults_attributes_taskCategory))
         }
         return nil
     }
@@ -235,6 +288,16 @@ func (m *TaskResults_attributes) GetIsSpeculative()(*bool) {
 func (m *TaskResults_attributes) GetMessage()(*string) {
     return m.message
 }
+// GetSourceEnforcementLevel gets the source-enforcement-level property value. Enforcement level of the source, falling back to the workspace task enforcement level.
+// returns a *TaskResults_attributes_sourceEnforcementLevel when successful
+func (m *TaskResults_attributes) GetSourceEnforcementLevel()(*TaskResults_attributes_sourceEnforcementLevel) {
+    return m.sourceEnforcementLevel
+}
+// GetSourceId gets the source-id property value. External ID of the task configuration or workspace task that produced this result.
+// returns a *string when successful
+func (m *TaskResults_attributes) GetSourceId()(*string) {
+    return m.sourceId
+}
 // GetStage gets the stage property value. The run stage during which this task result was created.
 // returns a *string when successful
 func (m *TaskResults_attributes) GetStage()(*string) {
@@ -249,6 +312,11 @@ func (m *TaskResults_attributes) GetStatus()(*TaskResults_attributes_status) {
 // returns a TaskResults_attributes_statusTimestampsable when successful
 func (m *TaskResults_attributes) GetStatusTimestamps()(TaskResults_attributes_statusTimestampsable) {
     return m.statusTimestamps
+}
+// GetTaskCategory gets the task-category property value. The taskCategory property
+// returns a *TaskResults_attributes_taskCategory when successful
+func (m *TaskResults_attributes) GetTaskCategory()(*TaskResults_attributes_taskCategory) {
+    return m.taskCategory
 }
 // GetTaskId gets the task-id property value. The external ID of the run task.
 // returns a *string when successful
@@ -331,6 +399,10 @@ func (m *TaskResults_attributes) SetAgentPoolId(value *string)() {
 func (m *TaskResults_attributes) SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.createdAt = value
 }
+// SetDuration sets the duration property value. Duration of the task result in milliseconds, from running to its final status. Null until it finishes.
+func (m *TaskResults_attributes) SetDuration(value *int32)() {
+    m.duration = value
+}
 // SetIsSpeculative sets the is-speculative property value. Whether the associated run is speculative (plan-only).
 func (m *TaskResults_attributes) SetIsSpeculative(value *bool)() {
     m.isSpeculative = value
@@ -338,6 +410,14 @@ func (m *TaskResults_attributes) SetIsSpeculative(value *bool)() {
 // SetMessage sets the message property value. A message describing the result of the run task execution.
 func (m *TaskResults_attributes) SetMessage(value *string)() {
     m.message = value
+}
+// SetSourceEnforcementLevel sets the source-enforcement-level property value. Enforcement level of the source, falling back to the workspace task enforcement level.
+func (m *TaskResults_attributes) SetSourceEnforcementLevel(value *TaskResults_attributes_sourceEnforcementLevel)() {
+    m.sourceEnforcementLevel = value
+}
+// SetSourceId sets the source-id property value. External ID of the task configuration or workspace task that produced this result.
+func (m *TaskResults_attributes) SetSourceId(value *string)() {
+    m.sourceId = value
 }
 // SetStage sets the stage property value. The run stage during which this task result was created.
 func (m *TaskResults_attributes) SetStage(value *string)() {
@@ -350,6 +430,10 @@ func (m *TaskResults_attributes) SetStatus(value *TaskResults_attributes_status)
 // SetStatusTimestamps sets the status-timestamps property value. A map of status names to timestamps indicating when the task result entered each status. Keys are formatted as "{status}-at".
 func (m *TaskResults_attributes) SetStatusTimestamps(value TaskResults_attributes_statusTimestampsable)() {
     m.statusTimestamps = value
+}
+// SetTaskCategory sets the task-category property value. The taskCategory property
+func (m *TaskResults_attributes) SetTaskCategory(value *TaskResults_attributes_taskCategory)() {
+    m.taskCategory = value
 }
 // SetTaskId sets the task-id property value. The external ID of the run task.
 func (m *TaskResults_attributes) SetTaskId(value *string)() {
@@ -388,11 +472,15 @@ type TaskResults_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetAgentPoolId()(*string)
     GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+    GetDuration()(*int32)
     GetIsSpeculative()(*bool)
     GetMessage()(*string)
+    GetSourceEnforcementLevel()(*TaskResults_attributes_sourceEnforcementLevel)
+    GetSourceId()(*string)
     GetStage()(*string)
     GetStatus()(*TaskResults_attributes_status)
     GetStatusTimestamps()(TaskResults_attributes_statusTimestampsable)
+    GetTaskCategory()(*TaskResults_attributes_taskCategory)
     GetTaskId()(*string)
     GetTaskName()(*string)
     GetTaskResultOutcomesCount()(*int32)
@@ -403,11 +491,15 @@ type TaskResults_attributesable interface {
     GetWorkspaceTaskId()(*string)
     SetAgentPoolId(value *string)()
     SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
+    SetDuration(value *int32)()
     SetIsSpeculative(value *bool)()
     SetMessage(value *string)()
+    SetSourceEnforcementLevel(value *TaskResults_attributes_sourceEnforcementLevel)()
+    SetSourceId(value *string)()
     SetStage(value *string)()
     SetStatus(value *TaskResults_attributes_status)()
     SetStatusTimestamps(value TaskResults_attributes_statusTimestampsable)()
+    SetTaskCategory(value *TaskResults_attributes_taskCategory)()
     SetTaskId(value *string)()
     SetTaskName(value *string)()
     SetTaskResultOutcomesCount(value *int32)()
