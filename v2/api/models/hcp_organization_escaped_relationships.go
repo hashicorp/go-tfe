@@ -12,6 +12,8 @@ type HcpOrganization_relationships struct {
     additionalData map[string]any
     // The connectedPlans property
     connectedPlans FeatureSetsHasManyable
+    // The defaultAccount property
+    defaultAccount HcpBillingAccountNullableHasOneable
 }
 // NewHcpOrganization_relationships instantiates a new HcpOrganization_relationships and sets the default values.
 func NewHcpOrganization_relationships()(*HcpOrganization_relationships) {
@@ -35,6 +37,11 @@ func (m *HcpOrganization_relationships) GetAdditionalData()(map[string]any) {
 func (m *HcpOrganization_relationships) GetConnectedPlans()(FeatureSetsHasManyable) {
     return m.connectedPlans
 }
+// GetDefaultAccount gets the default-account property value. The defaultAccount property
+// returns a HcpBillingAccountNullableHasOneable when successful
+func (m *HcpOrganization_relationships) GetDefaultAccount()(HcpBillingAccountNullableHasOneable) {
+    return m.defaultAccount
+}
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *HcpOrganization_relationships) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
@@ -49,12 +56,28 @@ func (m *HcpOrganization_relationships) GetFieldDeserializers()(map[string]func(
         }
         return nil
     }
+    res["default-account"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateHcpBillingAccountNullableHasOneFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetDefaultAccount(val.(HcpBillingAccountNullableHasOneable))
+        }
+        return nil
+    }
     return res
 }
 // Serialize serializes information the current object
 func (m *HcpOrganization_relationships) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
     {
         err := writer.WriteObjectValue("connected-plans", m.GetConnectedPlans())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("default-account", m.GetDefaultAccount())
         if err != nil {
             return err
         }
@@ -75,9 +98,15 @@ func (m *HcpOrganization_relationships) SetAdditionalData(value map[string]any)(
 func (m *HcpOrganization_relationships) SetConnectedPlans(value FeatureSetsHasManyable)() {
     m.connectedPlans = value
 }
+// SetDefaultAccount sets the default-account property value. The defaultAccount property
+func (m *HcpOrganization_relationships) SetDefaultAccount(value HcpBillingAccountNullableHasOneable)() {
+    m.defaultAccount = value
+}
 type HcpOrganization_relationshipsable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetConnectedPlans()(FeatureSetsHasManyable)
+    GetDefaultAccount()(HcpBillingAccountNullableHasOneable)
     SetConnectedPlans(value FeatureSetsHasManyable)()
+    SetDefaultAccount(value HcpBillingAccountNullableHasOneable)()
 }
