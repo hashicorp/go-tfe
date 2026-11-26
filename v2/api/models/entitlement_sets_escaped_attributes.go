@@ -10,6 +10,100 @@ import (
 type EntitlementSets_attributes struct {
     // Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
     additionalData map[string]any
+    // The agents property
+    agents *bool
+    // The assessments property
+    assessments *bool
+    // The auditLogging property
+    auditLogging *bool
+    // The canApply property
+    canApply *bool
+    // The changeRequests property
+    changeRequests *bool
+    // The configurationDesigner property
+    configurationDesigner *bool
+    // The costEstimation property
+    costEstimation *bool
+    // The ephemeralWorkspaces property
+    ephemeralWorkspaces *bool
+    // The globalRunTasks property
+    globalRunTasks *bool
+    // The hyok property
+    hyok *bool
+    // The infragraph property
+    infragraph *bool
+    // The infragraphWithNrtu property
+    infragraphWithNrtu *bool
+    // The metricsServiceTokenManagement property
+    metricsServiceTokenManagement *bool
+    // The moduleDeprecations property
+    moduleDeprecations *bool
+    // The moduleRevocations property
+    moduleRevocations *bool
+    // The moduleTestsAgentSupport property
+    moduleTestsAgentSupport *bool
+    // The noCodeModules property
+    noCodeModules *bool
+    // The operations property
+    operations *bool
+    // The policyEnforcement property
+    policyEnforcement *bool
+    // Null means unlimited.
+    policyLimit *int32
+    // Null means unlimited.
+    policyMandatoryEnforcementLimit *int32
+    // Null means unlimited.
+    policySetLimit *int32
+    // The privateModuleRegistry property
+    privateModuleRegistry *bool
+    // The privatePolicyAgents property
+    privatePolicyAgents *bool
+    // The privateVcs property
+    privateVcs *bool
+    // The recoverableItems property
+    recoverableItems *bool
+    // The registryArtifactVersionTagging property
+    registryArtifactVersionTagging *bool
+    // Null means unlimited.
+    runTaskLimit *int32
+    // Null means unlimited.
+    runTaskMandatoryEnforcementLimit *int32
+    // The runTasks property
+    runTasks *bool
+    // Null means unlimited.
+    runTaskWorkspaceLimit *int32
+    // The selfServeBilling property
+    selfServeBilling *bool
+    // The sentinel property
+    sentinel *bool
+    // The sso property
+    sso *bool
+    // The stacks property
+    stacks *bool
+    // The stateStorage property
+    stateStorage *bool
+    // The taskProjectScoping property
+    taskProjectScoping *bool
+    // The teams property
+    teams *bool
+    // The terraformActions property
+    terraformActions *bool
+    // The tfPolicyEnforcement property
+    tfPolicyEnforcement *bool
+    // The tfPolicyInitEnforcement property
+    tfPolicyInitEnforcement *bool
+    // Null means unlimited.
+    userLimit *int32
+    // The vcsIntegrations property
+    vcsIntegrations *bool
+    // Null means unlimited.
+    versionedPolicySetLimit *int32
+    // The viewableBilling property
+    viewableBilling *bool
+    // The waypointActions property
+    waypointActions *bool
+    // The waypointTemplatesAndAddons property
+    waypointTemplatesAndAddons *bool
 }
 // NewEntitlementSets_attributes instantiates a new EntitlementSets_attributes and sets the default values.
 func NewEntitlementSets_attributes()(*EntitlementSets_attributes) {
@@ -28,11 +122,716 @@ func CreateEntitlementSets_attributesFromDiscriminatorValue(parseNode i878a80d23
 func (m *EntitlementSets_attributes) GetAdditionalData()(map[string]any) {
     return m.additionalData
 }
+// GetAgents gets the agents property value. The agents property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetAgents()(*bool) {
+    return m.agents
+}
+// GetAssessments gets the assessments property value. The assessments property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetAssessments()(*bool) {
+    return m.assessments
+}
+// GetAuditLogging gets the audit-logging property value. The auditLogging property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetAuditLogging()(*bool) {
+    return m.auditLogging
+}
+// GetCanApply gets the can-apply property value. The canApply property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetCanApply()(*bool) {
+    return m.canApply
+}
+// GetChangeRequests gets the change-requests property value. The changeRequests property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetChangeRequests()(*bool) {
+    return m.changeRequests
+}
+// GetConfigurationDesigner gets the configuration-designer property value. The configurationDesigner property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetConfigurationDesigner()(*bool) {
+    return m.configurationDesigner
+}
+// GetCostEstimation gets the cost-estimation property value. The costEstimation property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetCostEstimation()(*bool) {
+    return m.costEstimation
+}
+// GetEphemeralWorkspaces gets the ephemeral-workspaces property value. The ephemeralWorkspaces property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetEphemeralWorkspaces()(*bool) {
+    return m.ephemeralWorkspaces
+}
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
 func (m *EntitlementSets_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error)) {
     res := make(map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error))
+    res["agents"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetAgents(val)
+        }
+        return nil
+    }
+    res["assessments"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetAssessments(val)
+        }
+        return nil
+    }
+    res["audit-logging"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetAuditLogging(val)
+        }
+        return nil
+    }
+    res["can-apply"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetCanApply(val)
+        }
+        return nil
+    }
+    res["change-requests"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetChangeRequests(val)
+        }
+        return nil
+    }
+    res["configuration-designer"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetConfigurationDesigner(val)
+        }
+        return nil
+    }
+    res["cost-estimation"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetCostEstimation(val)
+        }
+        return nil
+    }
+    res["ephemeral-workspaces"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetEphemeralWorkspaces(val)
+        }
+        return nil
+    }
+    res["global-run-tasks"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetGlobalRunTasks(val)
+        }
+        return nil
+    }
+    res["hyok"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetHyok(val)
+        }
+        return nil
+    }
+    res["infragraph"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetInfragraph(val)
+        }
+        return nil
+    }
+    res["infragraph-with-nrtu"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetInfragraphWithNrtu(val)
+        }
+        return nil
+    }
+    res["metrics-service-token-management"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetMetricsServiceTokenManagement(val)
+        }
+        return nil
+    }
+    res["module-deprecations"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetModuleDeprecations(val)
+        }
+        return nil
+    }
+    res["module-revocations"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetModuleRevocations(val)
+        }
+        return nil
+    }
+    res["module-tests-agent-support"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetModuleTestsAgentSupport(val)
+        }
+        return nil
+    }
+    res["no-code-modules"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetNoCodeModules(val)
+        }
+        return nil
+    }
+    res["operations"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetOperations(val)
+        }
+        return nil
+    }
+    res["policy-enforcement"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetPolicyEnforcement(val)
+        }
+        return nil
+    }
+    res["policy-limit"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetPolicyLimit(val)
+        }
+        return nil
+    }
+    res["policy-mandatory-enforcement-limit"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetPolicyMandatoryEnforcementLimit(val)
+        }
+        return nil
+    }
+    res["policy-set-limit"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetPolicySetLimit(val)
+        }
+        return nil
+    }
+    res["private-module-registry"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetPrivateModuleRegistry(val)
+        }
+        return nil
+    }
+    res["private-policy-agents"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetPrivatePolicyAgents(val)
+        }
+        return nil
+    }
+    res["private-vcs"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetPrivateVcs(val)
+        }
+        return nil
+    }
+    res["recoverable-items"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetRecoverableItems(val)
+        }
+        return nil
+    }
+    res["registry-artifact-version-tagging"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetRegistryArtifactVersionTagging(val)
+        }
+        return nil
+    }
+    res["run-task-limit"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetRunTaskLimit(val)
+        }
+        return nil
+    }
+    res["run-task-mandatory-enforcement-limit"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetRunTaskMandatoryEnforcementLimit(val)
+        }
+        return nil
+    }
+    res["run-tasks"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetRunTasks(val)
+        }
+        return nil
+    }
+    res["run-task-workspace-limit"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetRunTaskWorkspaceLimit(val)
+        }
+        return nil
+    }
+    res["self-serve-billing"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetSelfServeBilling(val)
+        }
+        return nil
+    }
+    res["sentinel"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetSentinel(val)
+        }
+        return nil
+    }
+    res["sso"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetSso(val)
+        }
+        return nil
+    }
+    res["stacks"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetStacks(val)
+        }
+        return nil
+    }
+    res["state-storage"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetStateStorage(val)
+        }
+        return nil
+    }
+    res["task-project-scoping"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetTaskProjectScoping(val)
+        }
+        return nil
+    }
+    res["teams"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetTeams(val)
+        }
+        return nil
+    }
+    res["terraform-actions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetTerraformActions(val)
+        }
+        return nil
+    }
+    res["tf-policy-enforcement"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetTfPolicyEnforcement(val)
+        }
+        return nil
+    }
+    res["tf-policy-init-enforcement"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetTfPolicyInitEnforcement(val)
+        }
+        return nil
+    }
+    res["user-limit"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetUserLimit(val)
+        }
+        return nil
+    }
+    res["vcs-integrations"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetVcsIntegrations(val)
+        }
+        return nil
+    }
+    res["versioned-policy-set-limit"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetInt32Value()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetVersionedPolicySetLimit(val)
+        }
+        return nil
+    }
+    res["viewable-billing"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetViewableBilling(val)
+        }
+        return nil
+    }
+    res["waypoint-actions"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetWaypointActions(val)
+        }
+        return nil
+    }
+    res["waypoint-templates-and-addons"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetBoolValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetWaypointTemplatesAndAddons(val)
+        }
+        return nil
+    }
     return res
+}
+// GetGlobalRunTasks gets the global-run-tasks property value. The globalRunTasks property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetGlobalRunTasks()(*bool) {
+    return m.globalRunTasks
+}
+// GetHyok gets the hyok property value. The hyok property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetHyok()(*bool) {
+    return m.hyok
+}
+// GetInfragraph gets the infragraph property value. The infragraph property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetInfragraph()(*bool) {
+    return m.infragraph
+}
+// GetInfragraphWithNrtu gets the infragraph-with-nrtu property value. The infragraphWithNrtu property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetInfragraphWithNrtu()(*bool) {
+    return m.infragraphWithNrtu
+}
+// GetMetricsServiceTokenManagement gets the metrics-service-token-management property value. The metricsServiceTokenManagement property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetMetricsServiceTokenManagement()(*bool) {
+    return m.metricsServiceTokenManagement
+}
+// GetModuleDeprecations gets the module-deprecations property value. The moduleDeprecations property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetModuleDeprecations()(*bool) {
+    return m.moduleDeprecations
+}
+// GetModuleRevocations gets the module-revocations property value. The moduleRevocations property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetModuleRevocations()(*bool) {
+    return m.moduleRevocations
+}
+// GetModuleTestsAgentSupport gets the module-tests-agent-support property value. The moduleTestsAgentSupport property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetModuleTestsAgentSupport()(*bool) {
+    return m.moduleTestsAgentSupport
+}
+// GetNoCodeModules gets the no-code-modules property value. The noCodeModules property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetNoCodeModules()(*bool) {
+    return m.noCodeModules
+}
+// GetOperations gets the operations property value. The operations property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetOperations()(*bool) {
+    return m.operations
+}
+// GetPolicyEnforcement gets the policy-enforcement property value. The policyEnforcement property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetPolicyEnforcement()(*bool) {
+    return m.policyEnforcement
+}
+// GetPolicyLimit gets the policy-limit property value. Null means unlimited.
+// returns a *int32 when successful
+func (m *EntitlementSets_attributes) GetPolicyLimit()(*int32) {
+    return m.policyLimit
+}
+// GetPolicyMandatoryEnforcementLimit gets the policy-mandatory-enforcement-limit property value. Null means unlimited.
+// returns a *int32 when successful
+func (m *EntitlementSets_attributes) GetPolicyMandatoryEnforcementLimit()(*int32) {
+    return m.policyMandatoryEnforcementLimit
+}
+// GetPolicySetLimit gets the policy-set-limit property value. Null means unlimited.
+// returns a *int32 when successful
+func (m *EntitlementSets_attributes) GetPolicySetLimit()(*int32) {
+    return m.policySetLimit
+}
+// GetPrivateModuleRegistry gets the private-module-registry property value. The privateModuleRegistry property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetPrivateModuleRegistry()(*bool) {
+    return m.privateModuleRegistry
+}
+// GetPrivatePolicyAgents gets the private-policy-agents property value. The privatePolicyAgents property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetPrivatePolicyAgents()(*bool) {
+    return m.privatePolicyAgents
+}
+// GetPrivateVcs gets the private-vcs property value. The privateVcs property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetPrivateVcs()(*bool) {
+    return m.privateVcs
+}
+// GetRecoverableItems gets the recoverable-items property value. The recoverableItems property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetRecoverableItems()(*bool) {
+    return m.recoverableItems
+}
+// GetRegistryArtifactVersionTagging gets the registry-artifact-version-tagging property value. The registryArtifactVersionTagging property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetRegistryArtifactVersionTagging()(*bool) {
+    return m.registryArtifactVersionTagging
+}
+// GetRunTaskLimit gets the run-task-limit property value. Null means unlimited.
+// returns a *int32 when successful
+func (m *EntitlementSets_attributes) GetRunTaskLimit()(*int32) {
+    return m.runTaskLimit
+}
+// GetRunTaskMandatoryEnforcementLimit gets the run-task-mandatory-enforcement-limit property value. Null means unlimited.
+// returns a *int32 when successful
+func (m *EntitlementSets_attributes) GetRunTaskMandatoryEnforcementLimit()(*int32) {
+    return m.runTaskMandatoryEnforcementLimit
+}
+// GetRunTasks gets the run-tasks property value. The runTasks property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetRunTasks()(*bool) {
+    return m.runTasks
+}
+// GetRunTaskWorkspaceLimit gets the run-task-workspace-limit property value. Null means unlimited.
+// returns a *int32 when successful
+func (m *EntitlementSets_attributes) GetRunTaskWorkspaceLimit()(*int32) {
+    return m.runTaskWorkspaceLimit
+}
+// GetSelfServeBilling gets the self-serve-billing property value. The selfServeBilling property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetSelfServeBilling()(*bool) {
+    return m.selfServeBilling
+}
+// GetSentinel gets the sentinel property value. The sentinel property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetSentinel()(*bool) {
+    return m.sentinel
+}
+// GetSso gets the sso property value. The sso property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetSso()(*bool) {
+    return m.sso
+}
+// GetStacks gets the stacks property value. The stacks property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetStacks()(*bool) {
+    return m.stacks
+}
+// GetStateStorage gets the state-storage property value. The stateStorage property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetStateStorage()(*bool) {
+    return m.stateStorage
+}
+// GetTaskProjectScoping gets the task-project-scoping property value. The taskProjectScoping property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetTaskProjectScoping()(*bool) {
+    return m.taskProjectScoping
+}
+// GetTeams gets the teams property value. The teams property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetTeams()(*bool) {
+    return m.teams
+}
+// GetTerraformActions gets the terraform-actions property value. The terraformActions property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetTerraformActions()(*bool) {
+    return m.terraformActions
+}
+// GetTfPolicyEnforcement gets the tf-policy-enforcement property value. The tfPolicyEnforcement property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetTfPolicyEnforcement()(*bool) {
+    return m.tfPolicyEnforcement
+}
+// GetTfPolicyInitEnforcement gets the tf-policy-init-enforcement property value. The tfPolicyInitEnforcement property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetTfPolicyInitEnforcement()(*bool) {
+    return m.tfPolicyInitEnforcement
+}
+// GetUserLimit gets the user-limit property value. Null means unlimited.
+// returns a *int32 when successful
+func (m *EntitlementSets_attributes) GetUserLimit()(*int32) {
+    return m.userLimit
+}
+// GetVcsIntegrations gets the vcs-integrations property value. The vcsIntegrations property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetVcsIntegrations()(*bool) {
+    return m.vcsIntegrations
+}
+// GetVersionedPolicySetLimit gets the versioned-policy-set-limit property value. Null means unlimited.
+// returns a *int32 when successful
+func (m *EntitlementSets_attributes) GetVersionedPolicySetLimit()(*int32) {
+    return m.versionedPolicySetLimit
+}
+// GetViewableBilling gets the viewable-billing property value. The viewableBilling property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetViewableBilling()(*bool) {
+    return m.viewableBilling
+}
+// GetWaypointActions gets the waypoint-actions property value. The waypointActions property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetWaypointActions()(*bool) {
+    return m.waypointActions
+}
+// GetWaypointTemplatesAndAddons gets the waypoint-templates-and-addons property value. The waypointTemplatesAndAddons property
+// returns a *bool when successful
+func (m *EntitlementSets_attributes) GetWaypointTemplatesAndAddons()(*bool) {
+    return m.waypointTemplatesAndAddons
 }
 // Serialize serializes information the current object
 func (m *EntitlementSets_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
@@ -48,7 +847,289 @@ func (m *EntitlementSets_attributes) Serialize(writer i878a80d2330e89d26896388a3
 func (m *EntitlementSets_attributes) SetAdditionalData(value map[string]any)() {
     m.additionalData = value
 }
+// SetAgents sets the agents property value. The agents property
+func (m *EntitlementSets_attributes) SetAgents(value *bool)() {
+    m.agents = value
+}
+// SetAssessments sets the assessments property value. The assessments property
+func (m *EntitlementSets_attributes) SetAssessments(value *bool)() {
+    m.assessments = value
+}
+// SetAuditLogging sets the audit-logging property value. The auditLogging property
+func (m *EntitlementSets_attributes) SetAuditLogging(value *bool)() {
+    m.auditLogging = value
+}
+// SetCanApply sets the can-apply property value. The canApply property
+func (m *EntitlementSets_attributes) SetCanApply(value *bool)() {
+    m.canApply = value
+}
+// SetChangeRequests sets the change-requests property value. The changeRequests property
+func (m *EntitlementSets_attributes) SetChangeRequests(value *bool)() {
+    m.changeRequests = value
+}
+// SetConfigurationDesigner sets the configuration-designer property value. The configurationDesigner property
+func (m *EntitlementSets_attributes) SetConfigurationDesigner(value *bool)() {
+    m.configurationDesigner = value
+}
+// SetCostEstimation sets the cost-estimation property value. The costEstimation property
+func (m *EntitlementSets_attributes) SetCostEstimation(value *bool)() {
+    m.costEstimation = value
+}
+// SetEphemeralWorkspaces sets the ephemeral-workspaces property value. The ephemeralWorkspaces property
+func (m *EntitlementSets_attributes) SetEphemeralWorkspaces(value *bool)() {
+    m.ephemeralWorkspaces = value
+}
+// SetGlobalRunTasks sets the global-run-tasks property value. The globalRunTasks property
+func (m *EntitlementSets_attributes) SetGlobalRunTasks(value *bool)() {
+    m.globalRunTasks = value
+}
+// SetHyok sets the hyok property value. The hyok property
+func (m *EntitlementSets_attributes) SetHyok(value *bool)() {
+    m.hyok = value
+}
+// SetInfragraph sets the infragraph property value. The infragraph property
+func (m *EntitlementSets_attributes) SetInfragraph(value *bool)() {
+    m.infragraph = value
+}
+// SetInfragraphWithNrtu sets the infragraph-with-nrtu property value. The infragraphWithNrtu property
+func (m *EntitlementSets_attributes) SetInfragraphWithNrtu(value *bool)() {
+    m.infragraphWithNrtu = value
+}
+// SetMetricsServiceTokenManagement sets the metrics-service-token-management property value. The metricsServiceTokenManagement property
+func (m *EntitlementSets_attributes) SetMetricsServiceTokenManagement(value *bool)() {
+    m.metricsServiceTokenManagement = value
+}
+// SetModuleDeprecations sets the module-deprecations property value. The moduleDeprecations property
+func (m *EntitlementSets_attributes) SetModuleDeprecations(value *bool)() {
+    m.moduleDeprecations = value
+}
+// SetModuleRevocations sets the module-revocations property value. The moduleRevocations property
+func (m *EntitlementSets_attributes) SetModuleRevocations(value *bool)() {
+    m.moduleRevocations = value
+}
+// SetModuleTestsAgentSupport sets the module-tests-agent-support property value. The moduleTestsAgentSupport property
+func (m *EntitlementSets_attributes) SetModuleTestsAgentSupport(value *bool)() {
+    m.moduleTestsAgentSupport = value
+}
+// SetNoCodeModules sets the no-code-modules property value. The noCodeModules property
+func (m *EntitlementSets_attributes) SetNoCodeModules(value *bool)() {
+    m.noCodeModules = value
+}
+// SetOperations sets the operations property value. The operations property
+func (m *EntitlementSets_attributes) SetOperations(value *bool)() {
+    m.operations = value
+}
+// SetPolicyEnforcement sets the policy-enforcement property value. The policyEnforcement property
+func (m *EntitlementSets_attributes) SetPolicyEnforcement(value *bool)() {
+    m.policyEnforcement = value
+}
+// SetPolicyLimit sets the policy-limit property value. Null means unlimited.
+func (m *EntitlementSets_attributes) SetPolicyLimit(value *int32)() {
+    m.policyLimit = value
+}
+// SetPolicyMandatoryEnforcementLimit sets the policy-mandatory-enforcement-limit property value. Null means unlimited.
+func (m *EntitlementSets_attributes) SetPolicyMandatoryEnforcementLimit(value *int32)() {
+    m.policyMandatoryEnforcementLimit = value
+}
+// SetPolicySetLimit sets the policy-set-limit property value. Null means unlimited.
+func (m *EntitlementSets_attributes) SetPolicySetLimit(value *int32)() {
+    m.policySetLimit = value
+}
+// SetPrivateModuleRegistry sets the private-module-registry property value. The privateModuleRegistry property
+func (m *EntitlementSets_attributes) SetPrivateModuleRegistry(value *bool)() {
+    m.privateModuleRegistry = value
+}
+// SetPrivatePolicyAgents sets the private-policy-agents property value. The privatePolicyAgents property
+func (m *EntitlementSets_attributes) SetPrivatePolicyAgents(value *bool)() {
+    m.privatePolicyAgents = value
+}
+// SetPrivateVcs sets the private-vcs property value. The privateVcs property
+func (m *EntitlementSets_attributes) SetPrivateVcs(value *bool)() {
+    m.privateVcs = value
+}
+// SetRecoverableItems sets the recoverable-items property value. The recoverableItems property
+func (m *EntitlementSets_attributes) SetRecoverableItems(value *bool)() {
+    m.recoverableItems = value
+}
+// SetRegistryArtifactVersionTagging sets the registry-artifact-version-tagging property value. The registryArtifactVersionTagging property
+func (m *EntitlementSets_attributes) SetRegistryArtifactVersionTagging(value *bool)() {
+    m.registryArtifactVersionTagging = value
+}
+// SetRunTaskLimit sets the run-task-limit property value. Null means unlimited.
+func (m *EntitlementSets_attributes) SetRunTaskLimit(value *int32)() {
+    m.runTaskLimit = value
+}
+// SetRunTaskMandatoryEnforcementLimit sets the run-task-mandatory-enforcement-limit property value. Null means unlimited.
+func (m *EntitlementSets_attributes) SetRunTaskMandatoryEnforcementLimit(value *int32)() {
+    m.runTaskMandatoryEnforcementLimit = value
+}
+// SetRunTasks sets the run-tasks property value. The runTasks property
+func (m *EntitlementSets_attributes) SetRunTasks(value *bool)() {
+    m.runTasks = value
+}
+// SetRunTaskWorkspaceLimit sets the run-task-workspace-limit property value. Null means unlimited.
+func (m *EntitlementSets_attributes) SetRunTaskWorkspaceLimit(value *int32)() {
+    m.runTaskWorkspaceLimit = value
+}
+// SetSelfServeBilling sets the self-serve-billing property value. The selfServeBilling property
+func (m *EntitlementSets_attributes) SetSelfServeBilling(value *bool)() {
+    m.selfServeBilling = value
+}
+// SetSentinel sets the sentinel property value. The sentinel property
+func (m *EntitlementSets_attributes) SetSentinel(value *bool)() {
+    m.sentinel = value
+}
+// SetSso sets the sso property value. The sso property
+func (m *EntitlementSets_attributes) SetSso(value *bool)() {
+    m.sso = value
+}
+// SetStacks sets the stacks property value. The stacks property
+func (m *EntitlementSets_attributes) SetStacks(value *bool)() {
+    m.stacks = value
+}
+// SetStateStorage sets the state-storage property value. The stateStorage property
+func (m *EntitlementSets_attributes) SetStateStorage(value *bool)() {
+    m.stateStorage = value
+}
+// SetTaskProjectScoping sets the task-project-scoping property value. The taskProjectScoping property
+func (m *EntitlementSets_attributes) SetTaskProjectScoping(value *bool)() {
+    m.taskProjectScoping = value
+}
+// SetTeams sets the teams property value. The teams property
+func (m *EntitlementSets_attributes) SetTeams(value *bool)() {
+    m.teams = value
+}
+// SetTerraformActions sets the terraform-actions property value. The terraformActions property
+func (m *EntitlementSets_attributes) SetTerraformActions(value *bool)() {
+    m.terraformActions = value
+}
+// SetTfPolicyEnforcement sets the tf-policy-enforcement property value. The tfPolicyEnforcement property
+func (m *EntitlementSets_attributes) SetTfPolicyEnforcement(value *bool)() {
+    m.tfPolicyEnforcement = value
+}
+// SetTfPolicyInitEnforcement sets the tf-policy-init-enforcement property value. The tfPolicyInitEnforcement property
+func (m *EntitlementSets_attributes) SetTfPolicyInitEnforcement(value *bool)() {
+    m.tfPolicyInitEnforcement = value
+}
+// SetUserLimit sets the user-limit property value. Null means unlimited.
+func (m *EntitlementSets_attributes) SetUserLimit(value *int32)() {
+    m.userLimit = value
+}
+// SetVcsIntegrations sets the vcs-integrations property value. The vcsIntegrations property
+func (m *EntitlementSets_attributes) SetVcsIntegrations(value *bool)() {
+    m.vcsIntegrations = value
+}
+// SetVersionedPolicySetLimit sets the versioned-policy-set-limit property value. Null means unlimited.
+func (m *EntitlementSets_attributes) SetVersionedPolicySetLimit(value *int32)() {
+    m.versionedPolicySetLimit = value
+}
+// SetViewableBilling sets the viewable-billing property value. The viewableBilling property
+func (m *EntitlementSets_attributes) SetViewableBilling(value *bool)() {
+    m.viewableBilling = value
+}
+// SetWaypointActions sets the waypoint-actions property value. The waypointActions property
+func (m *EntitlementSets_attributes) SetWaypointActions(value *bool)() {
+    m.waypointActions = value
+}
+// SetWaypointTemplatesAndAddons sets the waypoint-templates-and-addons property value. The waypointTemplatesAndAddons property
+func (m *EntitlementSets_attributes) SetWaypointTemplatesAndAddons(value *bool)() {
+    m.waypointTemplatesAndAddons = value
+}
 type EntitlementSets_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
+    GetAgents()(*bool)
+    GetAssessments()(*bool)
+    GetAuditLogging()(*bool)
+    GetCanApply()(*bool)
+    GetChangeRequests()(*bool)
+    GetConfigurationDesigner()(*bool)
+    GetCostEstimation()(*bool)
+    GetEphemeralWorkspaces()(*bool)
+    GetGlobalRunTasks()(*bool)
+    GetHyok()(*bool)
+    GetInfragraph()(*bool)
+    GetInfragraphWithNrtu()(*bool)
+    GetMetricsServiceTokenManagement()(*bool)
+    GetModuleDeprecations()(*bool)
+    GetModuleRevocations()(*bool)
+    GetModuleTestsAgentSupport()(*bool)
+    GetNoCodeModules()(*bool)
+    GetOperations()(*bool)
+    GetPolicyEnforcement()(*bool)
+    GetPolicyLimit()(*int32)
+    GetPolicyMandatoryEnforcementLimit()(*int32)
+    GetPolicySetLimit()(*int32)
+    GetPrivateModuleRegistry()(*bool)
+    GetPrivatePolicyAgents()(*bool)
+    GetPrivateVcs()(*bool)
+    GetRecoverableItems()(*bool)
+    GetRegistryArtifactVersionTagging()(*bool)
+    GetRunTaskLimit()(*int32)
+    GetRunTaskMandatoryEnforcementLimit()(*int32)
+    GetRunTasks()(*bool)
+    GetRunTaskWorkspaceLimit()(*int32)
+    GetSelfServeBilling()(*bool)
+    GetSentinel()(*bool)
+    GetSso()(*bool)
+    GetStacks()(*bool)
+    GetStateStorage()(*bool)
+    GetTaskProjectScoping()(*bool)
+    GetTeams()(*bool)
+    GetTerraformActions()(*bool)
+    GetTfPolicyEnforcement()(*bool)
+    GetTfPolicyInitEnforcement()(*bool)
+    GetUserLimit()(*int32)
+    GetVcsIntegrations()(*bool)
+    GetVersionedPolicySetLimit()(*int32)
+    GetViewableBilling()(*bool)
+    GetWaypointActions()(*bool)
+    GetWaypointTemplatesAndAddons()(*bool)
+    SetAgents(value *bool)()
+    SetAssessments(value *bool)()
+    SetAuditLogging(value *bool)()
+    SetCanApply(value *bool)()
+    SetChangeRequests(value *bool)()
+    SetConfigurationDesigner(value *bool)()
+    SetCostEstimation(value *bool)()
+    SetEphemeralWorkspaces(value *bool)()
+    SetGlobalRunTasks(value *bool)()
+    SetHyok(value *bool)()
+    SetInfragraph(value *bool)()
+    SetInfragraphWithNrtu(value *bool)()
+    SetMetricsServiceTokenManagement(value *bool)()
+    SetModuleDeprecations(value *bool)()
+    SetModuleRevocations(value *bool)()
+    SetModuleTestsAgentSupport(value *bool)()
+    SetNoCodeModules(value *bool)()
+    SetOperations(value *bool)()
+    SetPolicyEnforcement(value *bool)()
+    SetPolicyLimit(value *int32)()
+    SetPolicyMandatoryEnforcementLimit(value *int32)()
+    SetPolicySetLimit(value *int32)()
+    SetPrivateModuleRegistry(value *bool)()
+    SetPrivatePolicyAgents(value *bool)()
+    SetPrivateVcs(value *bool)()
+    SetRecoverableItems(value *bool)()
+    SetRegistryArtifactVersionTagging(value *bool)()
+    SetRunTaskLimit(value *int32)()
+    SetRunTaskMandatoryEnforcementLimit(value *int32)()
+    SetRunTasks(value *bool)()
+    SetRunTaskWorkspaceLimit(value *int32)()
+    SetSelfServeBilling(value *bool)()
+    SetSentinel(value *bool)()
+    SetSso(value *bool)()
+    SetStacks(value *bool)()
+    SetStateStorage(value *bool)()
+    SetTaskProjectScoping(value *bool)()
+    SetTeams(value *bool)()
+    SetTerraformActions(value *bool)()
+    SetTfPolicyEnforcement(value *bool)()
+    SetTfPolicyInitEnforcement(value *bool)()
+    SetUserLimit(value *int32)()
+    SetVcsIntegrations(value *bool)()
+    SetVersionedPolicySetLimit(value *int32)()
+    SetViewableBilling(value *bool)()
+    SetWaypointActions(value *bool)()
+    SetWaypointTemplatesAndAddons(value *bool)()
 }

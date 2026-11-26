@@ -18,7 +18,7 @@ type ItemStackDeploymentsRequestBuilder struct {
 type ItemStackDeploymentsRequestBuilderGetQueryParameters struct {
     // Return only the specified fields for stack-deployments resource(s) in the response. Use underscores for identifiers that contain a dash: For example, auto_apply instead of auto-apply. An empty value indicates that no fields should be returned.
     FieldsstackDeployments []string "uriparametername:\"fields%5Bstack%2Ddeployments%5D\""
-    // Only return deployments whose latest run was created from a stack configuration on this exact branch name (case-sensitive). Only applies when the `stacks-multi-branch` feature is enabled; otherwise it is ignored.
+    // Only return deployments whose latest run was created from a stack configuration on this exact branch name (case-sensitive). An array matches any of the supplied branches. Only applies when the `stacks-multi-branch` feature is enabled; otherwise it is ignored.
     Filterbranch *string "uriparametername:\"filter%5Bbranch%5D\""
     // Optionally side-load the specified relationships.
     Include []i0e1ebaf4b591e989c712afb4c3ccef15e3a61b3d849df70fe209a17e6dc03441.GetIncludeQueryParameterType "uriparametername:\"include\""
