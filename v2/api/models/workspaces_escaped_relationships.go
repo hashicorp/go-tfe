@@ -20,6 +20,10 @@ type Workspaces_relationships struct {
     currentRun RunsHasOneable
     // The currentStateVersion property
     currentStateVersion StateVersionsHasOneable
+    // The dataRetentionPolicy property
+    dataRetentionPolicy DataRetentionPolicyHasOneable
+    // The effectiveTagBindings property
+    effectiveTagBindings EffectiveTagBindingsHasManyable
     // The latestRun property
     latestRun RunsHasOneable
     // The lockedBy property
@@ -38,6 +42,8 @@ type Workspaces_relationships struct {
     remoteStateConsumers Workspaces_relationships_remoteStateConsumersable
     // The sshKey property
     sshKey SshKeysHasOneable
+    // Links-only relationship; resource identifiers are not included.
+    tagBindings TagBindingsHasManyable
     // The tags property
     tags TagsHasManyable
     // The vars property
@@ -84,6 +90,16 @@ func (m *Workspaces_relationships) GetCurrentRun()(RunsHasOneable) {
 // returns a StateVersionsHasOneable when successful
 func (m *Workspaces_relationships) GetCurrentStateVersion()(StateVersionsHasOneable) {
     return m.currentStateVersion
+}
+// GetDataRetentionPolicy gets the data-retention-policy property value. The dataRetentionPolicy property
+// returns a DataRetentionPolicyHasOneable when successful
+func (m *Workspaces_relationships) GetDataRetentionPolicy()(DataRetentionPolicyHasOneable) {
+    return m.dataRetentionPolicy
+}
+// GetEffectiveTagBindings gets the effective-tag-bindings property value. The effectiveTagBindings property
+// returns a EffectiveTagBindingsHasManyable when successful
+func (m *Workspaces_relationships) GetEffectiveTagBindings()(EffectiveTagBindingsHasManyable) {
+    return m.effectiveTagBindings
 }
 // GetFieldDeserializers the deserialization information for the current model
 // returns a map[string]func(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode)(error) when successful
@@ -136,6 +152,26 @@ func (m *Workspaces_relationships) GetFieldDeserializers()(map[string]func(i878a
         }
         if val != nil {
             m.SetCurrentStateVersion(val.(StateVersionsHasOneable))
+        }
+        return nil
+    }
+    res["data-retention-policy"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateDataRetentionPolicyHasOneFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetDataRetentionPolicy(val.(DataRetentionPolicyHasOneable))
+        }
+        return nil
+    }
+    res["effective-tag-bindings"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateEffectiveTagBindingsHasManyFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetEffectiveTagBindings(val.(EffectiveTagBindingsHasManyable))
         }
         return nil
     }
@@ -229,6 +265,16 @@ func (m *Workspaces_relationships) GetFieldDeserializers()(map[string]func(i878a
         }
         return nil
     }
+    res["tag-bindings"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateTagBindingsHasManyFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetTagBindings(val.(TagBindingsHasManyable))
+        }
+        return nil
+    }
     res["tags"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateTagsHasManyFromDiscriminatorValue)
         if err != nil {
@@ -296,6 +342,11 @@ func (m *Workspaces_relationships) GetRemoteStateConsumers()(Workspaces_relation
 func (m *Workspaces_relationships) GetSshKey()(SshKeysHasOneable) {
     return m.sshKey
 }
+// GetTagBindings gets the tag-bindings property value. Links-only relationship; resource identifiers are not included.
+// returns a TagBindingsHasManyable when successful
+func (m *Workspaces_relationships) GetTagBindings()(TagBindingsHasManyable) {
+    return m.tagBindings
+}
 // GetTags gets the tags property value. The tags property
 // returns a TagsHasManyable when successful
 func (m *Workspaces_relationships) GetTags()(TagsHasManyable) {
@@ -334,6 +385,18 @@ func (m *Workspaces_relationships) Serialize(writer i878a80d2330e89d26896388a3f4
     }
     {
         err := writer.WriteObjectValue("current-state-version", m.GetCurrentStateVersion())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("data-retention-policy", m.GetDataRetentionPolicy())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("effective-tag-bindings", m.GetEffectiveTagBindings())
         if err != nil {
             return err
         }
@@ -393,6 +456,12 @@ func (m *Workspaces_relationships) Serialize(writer i878a80d2330e89d26896388a3f4
         }
     }
     {
+        err := writer.WriteObjectValue("tag-bindings", m.GetTagBindings())
+        if err != nil {
+            return err
+        }
+    }
+    {
         err := writer.WriteObjectValue("tags", m.GetTags())
         if err != nil {
             return err
@@ -436,6 +505,14 @@ func (m *Workspaces_relationships) SetCurrentRun(value RunsHasOneable)() {
 func (m *Workspaces_relationships) SetCurrentStateVersion(value StateVersionsHasOneable)() {
     m.currentStateVersion = value
 }
+// SetDataRetentionPolicy sets the data-retention-policy property value. The dataRetentionPolicy property
+func (m *Workspaces_relationships) SetDataRetentionPolicy(value DataRetentionPolicyHasOneable)() {
+    m.dataRetentionPolicy = value
+}
+// SetEffectiveTagBindings sets the effective-tag-bindings property value. The effectiveTagBindings property
+func (m *Workspaces_relationships) SetEffectiveTagBindings(value EffectiveTagBindingsHasManyable)() {
+    m.effectiveTagBindings = value
+}
 // SetLatestRun sets the latest-run property value. The latestRun property
 func (m *Workspaces_relationships) SetLatestRun(value RunsHasOneable)() {
     m.latestRun = value
@@ -472,6 +549,10 @@ func (m *Workspaces_relationships) SetRemoteStateConsumers(value Workspaces_rela
 func (m *Workspaces_relationships) SetSshKey(value SshKeysHasOneable)() {
     m.sshKey = value
 }
+// SetTagBindings sets the tag-bindings property value. Links-only relationship; resource identifiers are not included.
+func (m *Workspaces_relationships) SetTagBindings(value TagBindingsHasManyable)() {
+    m.tagBindings = value
+}
 // SetTags sets the tags property value. The tags property
 func (m *Workspaces_relationships) SetTags(value TagsHasManyable)() {
     m.tags = value
@@ -488,6 +569,8 @@ type Workspaces_relationshipsable interface {
     GetCurrentConfigurationVersion()(ConfigurationVersionsHasOneable)
     GetCurrentRun()(RunsHasOneable)
     GetCurrentStateVersion()(StateVersionsHasOneable)
+    GetDataRetentionPolicy()(DataRetentionPolicyHasOneable)
+    GetEffectiveTagBindings()(EffectiveTagBindingsHasManyable)
     GetLatestRun()(RunsHasOneable)
     GetLockedBy()(LockedByHasOneable)
     GetNoCodeModuleVersion()(NoCodeModuleVersionsHasOneable)
@@ -497,6 +580,7 @@ type Workspaces_relationshipsable interface {
     GetReadme()(WorkspaceReadmeHasOneable)
     GetRemoteStateConsumers()(Workspaces_relationships_remoteStateConsumersable)
     GetSshKey()(SshKeysHasOneable)
+    GetTagBindings()(TagBindingsHasManyable)
     GetTags()(TagsHasManyable)
     GetVars()(VarsHasManyable)
     SetAgentPool(value AgentPoolsHasOneable)()
@@ -504,6 +588,8 @@ type Workspaces_relationshipsable interface {
     SetCurrentConfigurationVersion(value ConfigurationVersionsHasOneable)()
     SetCurrentRun(value RunsHasOneable)()
     SetCurrentStateVersion(value StateVersionsHasOneable)()
+    SetDataRetentionPolicy(value DataRetentionPolicyHasOneable)()
+    SetEffectiveTagBindings(value EffectiveTagBindingsHasManyable)()
     SetLatestRun(value RunsHasOneable)()
     SetLockedBy(value LockedByHasOneable)()
     SetNoCodeModuleVersion(value NoCodeModuleVersionsHasOneable)()
@@ -513,6 +599,7 @@ type Workspaces_relationshipsable interface {
     SetReadme(value WorkspaceReadmeHasOneable)()
     SetRemoteStateConsumers(value Workspaces_relationships_remoteStateConsumersable)()
     SetSshKey(value SshKeysHasOneable)()
+    SetTagBindings(value TagBindingsHasManyable)()
     SetTags(value TagsHasManyable)()
     SetVars(value VarsHasManyable)()
 }

@@ -12,6 +12,8 @@ type OotbPolicyLibraries_attributes struct {
     additionalData map[string]any
     // Human-readable library name.
     name *string
+    // URL of the source repository the OOTB policy library is published from.
+    repoUrl *string
 }
 // NewOotbPolicyLibraries_attributes instantiates a new OotbPolicyLibraries_attributes and sets the default values.
 func NewOotbPolicyLibraries_attributes()(*OotbPolicyLibraries_attributes) {
@@ -44,12 +46,27 @@ func (m *OotbPolicyLibraries_attributes) GetFieldDeserializers()(map[string]func
         }
         return nil
     }
+    res["repo-url"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetRepoUrl(val)
+        }
+        return nil
+    }
     return res
 }
 // GetName gets the name property value. Human-readable library name.
 // returns a *string when successful
 func (m *OotbPolicyLibraries_attributes) GetName()(*string) {
     return m.name
+}
+// GetRepoUrl gets the repo-url property value. URL of the source repository the OOTB policy library is published from.
+// returns a *string when successful
+func (m *OotbPolicyLibraries_attributes) GetRepoUrl()(*string) {
+    return m.repoUrl
 }
 // Serialize serializes information the current object
 func (m *OotbPolicyLibraries_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
@@ -75,9 +92,15 @@ func (m *OotbPolicyLibraries_attributes) SetAdditionalData(value map[string]any)
 func (m *OotbPolicyLibraries_attributes) SetName(value *string)() {
     m.name = value
 }
+// SetRepoUrl sets the repo-url property value. URL of the source repository the OOTB policy library is published from.
+func (m *OotbPolicyLibraries_attributes) SetRepoUrl(value *string)() {
+    m.repoUrl = value
+}
 type OotbPolicyLibraries_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetName()(*string)
+    GetRepoUrl()(*string)
     SetName(value *string)()
+    SetRepoUrl(value *string)()
 }
