@@ -17,10 +17,14 @@ type Agents_attributes struct {
     ipAddress *string
     // The lastPingAt property
     lastPingAt *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time
+    // Links for the agent. Note this is emitted inside attributes rather than at the resource level.
+    links Agents_attributes_linksable
     // The name property
     name *string
     // The status property
     status *string
+    // The version of the agent.
+    version *string
 }
 // NewAgents_attributes instantiates a new Agents_attributes and sets the default values.
 func NewAgents_attributes()(*Agents_attributes) {
@@ -78,6 +82,16 @@ func (m *Agents_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330
         }
         return nil
     }
+    res["links"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(CreateAgents_attributes_linksFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetLinks(val.(Agents_attributes_linksable))
+        }
+        return nil
+    }
     res["name"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetStringValue()
         if err != nil {
@@ -98,6 +112,16 @@ func (m *Agents_attributes) GetFieldDeserializers()(map[string]func(i878a80d2330
         }
         return nil
     }
+    res["version"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetStringValue()
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetVersion(val)
+        }
+        return nil
+    }
     return res
 }
 // GetIpAddress gets the ip-address property value. The ipAddress property
@@ -110,6 +134,11 @@ func (m *Agents_attributes) GetIpAddress()(*string) {
 func (m *Agents_attributes) GetLastPingAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time) {
     return m.lastPingAt
 }
+// GetLinks gets the links property value. Links for the agent. Note this is emitted inside attributes rather than at the resource level.
+// returns a Agents_attributes_linksable when successful
+func (m *Agents_attributes) GetLinks()(Agents_attributes_linksable) {
+    return m.links
+}
 // GetName gets the name property value. The name property
 // returns a *string when successful
 func (m *Agents_attributes) GetName()(*string) {
@@ -119,6 +148,11 @@ func (m *Agents_attributes) GetName()(*string) {
 // returns a *string when successful
 func (m *Agents_attributes) GetStatus()(*string) {
     return m.status
+}
+// GetVersion gets the version property value. The version of the agent.
+// returns a *string when successful
+func (m *Agents_attributes) GetVersion()(*string) {
+    return m.version
 }
 // Serialize serializes information the current object
 func (m *Agents_attributes) Serialize(writer i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.SerializationWriter)(error) {
@@ -170,6 +204,10 @@ func (m *Agents_attributes) SetIpAddress(value *string)() {
 func (m *Agents_attributes) SetLastPingAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)() {
     m.lastPingAt = value
 }
+// SetLinks sets the links property value. Links for the agent. Note this is emitted inside attributes rather than at the resource level.
+func (m *Agents_attributes) SetLinks(value Agents_attributes_linksable)() {
+    m.links = value
+}
 // SetName sets the name property value. The name property
 func (m *Agents_attributes) SetName(value *string)() {
     m.name = value
@@ -178,17 +216,25 @@ func (m *Agents_attributes) SetName(value *string)() {
 func (m *Agents_attributes) SetStatus(value *string)() {
     m.status = value
 }
+// SetVersion sets the version property value. The version of the agent.
+func (m *Agents_attributes) SetVersion(value *string)() {
+    m.version = value
+}
 type Agents_attributesable interface {
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.AdditionalDataHolder
     i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.Parsable
     GetCreatedAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
     GetIpAddress()(*string)
     GetLastPingAt()(*i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)
+    GetLinks()(Agents_attributes_linksable)
     GetName()(*string)
     GetStatus()(*string)
+    GetVersion()(*string)
     SetCreatedAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
     SetIpAddress(value *string)()
     SetLastPingAt(value *i336074805fc853987abe6f7fe3ad97a6a6f3077a16391fec744f671a015fbd7e.Time)()
+    SetLinks(value Agents_attributes_linksable)()
     SetName(value *string)()
     SetStatus(value *string)()
+    SetVersion(value *string)()
 }
