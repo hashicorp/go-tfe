@@ -20,6 +20,8 @@ type WorkspaceOutputs_attributes struct {
     outputType *string
     // The sensitive property
     sensitive *bool
+    // The output value, which may be any JSON type. Null when the output is sensitive.
+    value i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable
     // The workspaceAttributes property
     workspaceAttributes WorkspaceOutputs_attributes_workspaceAttributesable
 }
@@ -99,6 +101,16 @@ func (m *WorkspaceOutputs_attributes) GetFieldDeserializers()(map[string]func(i8
         }
         return nil
     }
+    res["value"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
+        val, err := n.GetObjectValue(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.CreateUntypedNodeFromDiscriminatorValue)
+        if err != nil {
+            return err
+        }
+        if val != nil {
+            m.SetValue(val.(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable))
+        }
+        return nil
+    }
     res["workspace-attributes"] = func (n i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.ParseNode) error {
         val, err := n.GetObjectValue(CreateWorkspaceOutputs_attributes_workspaceAttributesFromDiscriminatorValue)
         if err != nil {
@@ -130,6 +142,11 @@ func (m *WorkspaceOutputs_attributes) GetOutputType()(*string) {
 // returns a *bool when successful
 func (m *WorkspaceOutputs_attributes) GetSensitive()(*bool) {
     return m.sensitive
+}
+// GetValue gets the value property value. The output value, which may be any JSON type. Null when the output is sensitive.
+// returns a UntypedNodeable when successful
+func (m *WorkspaceOutputs_attributes) GetValue()(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable) {
+    return m.value
 }
 // GetWorkspaceAttributes gets the workspace-attributes property value. The workspaceAttributes property
 // returns a WorkspaceOutputs_attributes_workspaceAttributesable when successful
@@ -164,6 +181,12 @@ func (m *WorkspaceOutputs_attributes) Serialize(writer i878a80d2330e89d26896388a
     }
     {
         err := writer.WriteBoolValue("sensitive", m.GetSensitive())
+        if err != nil {
+            return err
+        }
+    }
+    {
+        err := writer.WriteObjectValue("value", m.GetValue())
         if err != nil {
             return err
         }
@@ -206,6 +229,10 @@ func (m *WorkspaceOutputs_attributes) SetOutputType(value *string)() {
 func (m *WorkspaceOutputs_attributes) SetSensitive(value *bool)() {
     m.sensitive = value
 }
+// SetValue sets the value property value. The output value, which may be any JSON type. Null when the output is sensitive.
+func (m *WorkspaceOutputs_attributes) SetValue(value i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable)() {
+    m.value = value
+}
 // SetWorkspaceAttributes sets the workspace-attributes property value. The workspaceAttributes property
 func (m *WorkspaceOutputs_attributes) SetWorkspaceAttributes(value WorkspaceOutputs_attributes_workspaceAttributesable)() {
     m.workspaceAttributes = value
@@ -218,11 +245,13 @@ type WorkspaceOutputs_attributesable interface {
     GetOrganizationAttributes()(WorkspaceOutputs_attributes_organizationAttributesable)
     GetOutputType()(*string)
     GetSensitive()(*bool)
+    GetValue()(i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable)
     GetWorkspaceAttributes()(WorkspaceOutputs_attributes_workspaceAttributesable)
     SetDetailedType(value i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable)()
     SetName(value *string)()
     SetOrganizationAttributes(value WorkspaceOutputs_attributes_organizationAttributesable)()
     SetOutputType(value *string)()
     SetSensitive(value *bool)()
+    SetValue(value i878a80d2330e89d26896388a3f487eef27b0a0e6c010c493bf80be1452208f91.UntypedNodeable)()
     SetWorkspaceAttributes(value WorkspaceOutputs_attributes_workspaceAttributesable)()
 }
